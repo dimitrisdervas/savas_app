@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Μεταβολικό Σύνδρομο — IDF Europe (Full)</title>
+<style>
+/* ASCVD labels */
+.ascvd-low{color:#10b981;font-weight:700}
+.ascvd-border{color:#eab308;font-weight:700}
+.ascvd-mid{color:#f97316;font-weight:700}
+.ascvd-high{color:#ef4444;font-weight:700}
+
+/* Base UI */
+body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:0;background:#0b1020;color:#e7ebff}
+.card{max-width:980px;margin:24px auto;padding:24px;background:#111833;border-radius:16px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+h1,h2{text-align:center;margin:4px 0;color:white}
+h2{font-size:1.15rem;font-weight:650}
+h1{margin-top:2px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:18px}
+label{font-size:0.85rem;font-weight:600;color:#cbd1f9;margin-bottom:3px;display:block}
+.ref{font-size:0.75rem;color:#9aa4d9;margin-top:2px}
+input,select{width:100%;padding:6px;border-radius:8px;border:1px solid #223070;background:#0f1533;font-size:0.95rem;color:#ffffff;outline:none}
+button{margin-top:18px;padding:12px 16px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
+#calcBtn{background:#32d583;color:inherit}
+#printBtn{background:#3DD6A0;color:inherit;margin-left:10px}
+#clearBtn{background:#c0392b;color:inherit;margin-left:10px}
+#clearStackBtn{background:#8e44ad;color:inherit;margin-left:10px}
+#out{margin-top:20px;font-size:1.3rem;font-weight:bold;text-align:center}
+#report{margin-top:25px;padding:14px;border:1px solid #4f72ff;border-radius:10px;background:#0f183b;white-space:pre-line;display:none;font-size:0.88rem}
+#logo{width:64px;height:64px;border-radius:14px;background:#3DD6A0;color:#ffffff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.3rem;margin:14px auto}
+hr{border:none;border-top:1px solid #2a3766;margin:26px 0}
+@media print{ div[style*="text-align:center"]{display:none!important} }
+.tick{color:#3DD6A0;font-weight:800}
+.cross{color:#7c8299;font-weight:800}
+@media print{.tick,.cross{color:black}}
+
+/* BMI colors */
+.bmi-under{color:#6b7280!important}
+.bmi-normal{color:#10b981!important}
+.bmi-over{color:#f59e0b!important}
+.bmi-obese{color:#ef4444!important}
+
+/* SCORE2-Diabetes categories */
+.s2d-low{color:#10b981;font-weight:700}
+.s2d-mid{color:#f59e0b;font-weight:700}
+.s2d-high{color:#ef4444;font-weight:700}
+.s2d-vhigh{color:#b91c1c;font-weight:800}
+@media print{ .s2d-low,.s2d-mid,.s2d-high,.s2d-vhigh{color:black!important} }
+
+/* Lp(a) categories */
+.lpa-low{color:#10b981;font-weight:700}
+.lpa-mid{color:#eab308;font-weight:700}
+.lpa-high{color:#f97316;font-weight:700}
+.lpa-very{color:#ef4444;font-weight:700}
+@media print{ .lpa-low,.lpa-mid,.lpa-high,.lpa-very{color:black!important} }
+
+/* ACR categories */
+.acr-a1{color:#10b981;font-weight:700}  /* <30 mg/g */
+.acr-a2{color:#f59e0b;font-weight:700}  /* 30–300 mg/g */
+.acr-a3{color:#ef4444;font-weight:700}  /* >300 mg/g */
+@media print{ .acr-a1,.acr-a2,.acr-a3{color:black!important} }
+
+/* eGFR stages */
+.gfr-g1{color:#10b981;font-weight:700}
+.gfr-g2{color:#eab308;font-weight:700}
+.gfr-g3{color:#f97316;font-weight:700}
+.gfr-g4{color:#ef4444;font-weight:700}
+.gfr-g5{color:#b91c1c;font-weight:800}
+@media print{ .gfr-g1,.gfr-g2,.gfr-g3,.gfr-g4,.gfr-g5{color:black!important} }
+
+/* KDIGO 6x3 Matrix (full) */
+.kdigo-wrap{display:none;margin-top:18px}
+.kdigo{border-collapse:separate;border-spacing:6px;margin:0 auto}
+.kdigo th, .kdigo td{min-width:90px;height:52px;text-align:center;vertical-align:middle;border-radius:8px;padding:6px 8px;font-weight:700}
+.kd-hdr{background:#0f1533;color:#cbd1f9;border:1px solid #223070;font-weight:800}
+.kd-Glab{background:#0f1533;color:#cbd1f9;border:1px solid #223070;font-weight:800}
+.kd-A1{background:#0b3; background: #0d6d3a; color:#fff}         /* green */
+.kd-A2{background:#b38600; background:#9b7d1f; color:#fff}       /* yellow/amber */
+.kd-A3{background:#b01f1f; color:#fff}                           /* red */
+.kd-A2-hi{background:#cc6e00; color:#fff}                        /* orange */
+.kd-very{background:#6d0d0d; color:#fff}                         /* very high dark red */
+.kd-mark{font-size:24px; font-weight:900; color:black;}
+.kd-table td .kd-mark{display:block;width:100%;text-align:center;}
+
+/* ensure print keeps colors */
+@media print{
+  .kd-A1,.kd-A2,.kd-A3,.kd-A2-hi,.kd-very{ -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .kd-mark{color:black!important}
+}
+
+/* === PRINT FIX: don't split cards === */
+@media print {
+  .card{
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+}
+
+/* === PRINT PAGES: one report per page in the stack === */
+@media print {
+  #printStack > .printPage{
+    page-break-after: always;
+    break-after: page;
+  }
+}
+
+
+
+
+/* KDIGO color cells nicer palette + larger font */
+.kd-green{background:#0CCE6B;color:#000}
+.kd-yellow{background:#FDE74C;color:#000}
+.kd-orange{background:#FD6A02;color:#fff}
+.kd-red{background:#D7263D;color:#fff}
+.kd-table td,.kd-table th{font-size:0.95rem}
+
+
+@media print {
+  body { font-size:9pt !important; }
+  .grid { 
+    display:grid !important;
+    grid-template-columns:1fr 1fr !important;
+    column-gap:8px !important;
+    row-gap:4px !important;
+  }
+  input, select, textarea { font-size:9pt !important; padding:2px 3px !important; }
+  h1, h2 { margin-bottom:2px !important; margin-top:2px !important; }
+}
+
+</style>
+</head>
+<body>
+<div class="card">
+
+<h1>Γενικός Οικογενειακός Ιατρός<br>Dr Γιαλαβούζης Σάββας</h1>
+<div id="logo">MS</div>
+<h2>Ολιστικός Καρδιο-Νεφρο-Μεταβολικός Κίνδυνος<br>IDF · SCORE2 / ASCVD · CKD-EPI / KDIGO</h2>
+<div style="height:1px;background:#2a3766;margin:12px auto 18px;max-width:80%"></div>
+
+<div class="grid">
+
+<div><label>Όνομα ασθενούς</label><input id="n"></div>
+<div><label>Φύλο</label><select id="s"><option value="male">Άνδρας</option><option value="female">Γυναίκα</option></select></div>
+<div><label>Ηλικία</label><input id="age" type="number"></div>
+
+<div><label>Περίμετρος μέσης (cm)</label><input id="wc" type="number"><div class="ref">IDF: άνδρες ≥94 — γυναίκες ≥80</div></div>
+<div><label>Τριγλυκερίδια (mg/dL)</label><input id="tg" type="number"><div class="ref">φυσιολογικό &lt;150</div></div>
+<div><label>HDL (mg/dL)</label><input id="hdl" type="number"><div class="ref">άνδρες ≥40 — γυναίκες ≥50</div></div>
+<div><label>Συνολική χοληστερόλη TC (mg/dL)</label><input id="tc" type="number"><div class="ref">για ASCVD / SCORE2</div></div>
+
+<div><label>Γλυκόζη νηστείας (mg/dL)</label><input id="fpg" type="number"><div class="ref">φυσιολογικό &lt;100</div></div>
+<div><label>Συστολική ΑΠ (mmHg)</label><input id="sbp" type="number"><div class="ref">φυσιολογικό &lt;130</div></div>
+<div><label>Διαστολική ΑΠ (mmHg)</label><input id="dbp" type="number"><div class="ref">φυσιολογικό &lt;85</div></div>
+
+<div><label>Βάρος (kg)</label><input id="w" type="number" oninput="autoBMI()"></div>
+<div><label>Ύψος (cm)</label><input id="h" type="number" oninput="autoBMI()"></div>
+<div><label>BMI (kg/m²)</label><input id="bmi" readonly></div>
+<div><label>BMI κατηγορία</label><input id="bmicat" readonly></div>
+
+<!-- Lp(a) -->
+<div>
+  <label>Lp(a)</label>
+  <div style="display:flex;gap:8px;align-items:center">
+    <input id="lpa" type="number" step="0.1" style="flex:1" inputmode="decimal" placeholder="τιμή">
+    <select id="lpa_unit" style="max-width:110px">
+      <option value="mgdl" selected>mg/dL</option>
+      <option value="nmol">nmol/L</option>
+    </select>
+  </div>
+  <div class="ref">Κατηγοριοποίηση: &lt;30 χαμηλός · 30–50 μέτριος · &gt;50 αυξημένος · &gt;100 πολύ υψηλός</div>
+</div>
+
+<!-- Kidney: Serum Cr & eGFR 2021 + Urine ACR -->
+<div><label>Κρεατινίνη ορού (mg/dL)</label><input id="scr" type="number" step="0.01"></div>
+<div><label>eGFR CKD‑EPI 2021 (mL/min/1.73m²)</label><input id="egfr_auto" type="number" step="1" readonly></div>
+
+<div><label>Λευκωματίνη ούρων (mg/L)</label><input id="ualb" type="number" step="0.1"></div>
+<div>
+  <label>Κρεατινίνη ούρων</label>
+  <div style="display:flex;gap:8px;align-items:center">
+    <input id="ucr" type="number" step="0.1" style="flex:1">
+    <select id="ucr_unit" style="max-width:110px">
+      <option value="mgdl" selected>mg/dL</option>
+      <option value="mmol">mmol/L</option>
+    </select>
+  </div>
+  <div class="ref">Αν επιλέξεις mmol/L, γίνεται αυτόματη μετατροπή (1 mmol Cr ≈ 113.12 mg, ACR mg/g = (Alb mg/L / Cr mmol/L) × 8.84)</div>
+</div>
+<div><label>ACR (mg/g)</label><input id="acr" type="number" step="1" readonly></div>
+
+<div><label>Διαβήτης</label>
+  <select id="dm" onchange="onDMchange()">
+    <option value="ΟΧΙ">ΟΧΙ</option><option value="ΝΑΙ">ΝΑΙ</option>
+  </select>
+</div>
+<div style="display:none"><label>HbA1c (%)</label><input id="hbA1c" type="number" step="0.1"></div>
+<div style="display:none"><label>eGFR (mL/min/1.73m²) — για SCORE2-DM</label><input id="egfr" type="number" step="1"></div>
+<div style="display:none"><label>Ηλικία διάγνωσης ΣΔ</label><input id="age_dm_dx" type="number" min="1"></div>
+<div><label>Κάπνισμα</label><select id="smoke"><option value="ΟΧΙ">ΟΧΙ</option><option value="ΝΑΙ">ΝΑΙ</option></select></div>
+<div><label>Αγωγή σακχάρου</label><select id="t_sug"><option value="">Καμία</option><option value="ΝΑΙ">ΝΑΙ</option></select></div>
+<div><label>Αγωγή υπέρτασης</label><select id="t_htn"><option value="">Καμία</option><option value="ΝΑΙ">ΝΑΙ</option></select></div>
+<div><label>Αγωγή υπερλιπιδαιμίας</label><select id="t_lip"><option value="">Καμία</option><option value="ΝΑΙ">ΝΑΙ</option></select></div><div style="page-break-after:always"></div>
+
+</div><!-- end .grid -->
+
+<!-- KDIGO MATRIX (full) -->
+<!-- legend clarifications -->
+<div class="kdigo-wrap">
+<p class="kd-title">Κατηγοριοποίηση κατά KDIGO (GFR × ACR)</p>
+    <table class="kd-table" id="kdigoMatrix" aria-label="KDIGO risk grid">
+      <tr>
+        <th class="kd-firstcol"> </th>
+        <th class="kd-hdrcol">A1<br><small>Φυσιολογικό έως ελαφριά αύξηση<br>(&lt;30 mg/g)</small></th>
+        <th class="kd-hdrcol">A2<br><small>Μέτρια αύξηση<br>(30–300 mg/g)</small></th>
+        <th class="kd-hdrcol">A3<br><small>Σοβαρή αύξηση<br>(&gt;300 mg/g)</small></th>
+      </tr>
+      <tr>
+        <th>G1<br><small>&ge;90 Φυσιολογική</small></th>
+        <td id="G1A1" class="kd-green"></td>
+        <td id="G1A2" class="kd-yellow"></td>
+        <td id="G1A3" class="kd-orange"></td>
+      </tr>
+      <tr>
+        <th>G2<br><small>60–89 Ελαφρά μειωμένη</small></th>
+        <td id="G2A1" class="kd-green"></td>
+        <td id="G2A2" class="kd-yellow"></td>
+        <td id="G2A3" class="kd-orange"></td>
+      </tr>
+      <tr>
+        <th>G3a<br><small>45–59 Ελαφρά έως μέτρια μειωμένη</small></th>
+        <td id="G3aA1" class="kd-yellow"></td>
+        <td id="G3aA2" class="kd-orange"></td>
+        <td id="G3aA3" class="kd-red"></td>
+      </tr>
+      <tr>
+        <th>G3b<br><small>30–44 Μέτρια έως σοβαρά μειωμένη</small></th>
+        <td id="G3bA1" class="kd-orange"></td>
+        <td id="G3bA2" class="kd-red"></td>
+        <td id="G3bA3" class="kd-red"></td>
+      </tr>
+      <tr>
+        <th>G4<br><small>15–29 Σοβαρά μειωμένη</small></th>
+        <td id="G4A1" class="kd-red"></td>
+        <td id="G4A2" class="kd-red"></td>
+        <td id="G4A3" class="kd-red"></td>
+      </tr>
+      <tr>
+        <th>G5<br><small>&lt;15 Νεφρική ανεπάρκεια</small></th>
+        <td id="G5A1" class="kd-red"></td>
+        <td id="G5A2" class="kd-red"></td>
+        <td id="G5A3" class="kd-red"></td>
+      </tr>
+    </table>
+
+<div style='color:#cbd1f9;font-size:0.85rem;margin-top:12px'>
+<b>ΧΡΩΜΑΤΑ:</b>
+&nbsp;<span style='background:#0CCE6B;color:#000;padding:3px 6px;border-radius:6px'>Χαμηλός</span>
+&nbsp;<span style='background:#FDE74C;color:#000;padding:3px 6px;border-radius:6px'>Μέτριος</span>
+&nbsp;<span style='background:#FD6A02;color:#fff;padding:3px 6px;border-radius:6px'>Υψηλός</span>
+&nbsp;<span style='background:#D7263D;color:#fff;padding:3px 6px;border-radius:6px'>Πολύ Υψηλός</span>
+</div>
+
+<p class="ref">Σημείωση: το ✓ εμφανίζεται αυτόματα στο σωστό κελί με βάση τα πεδία eGFR & ACR.</p>
+
+    
+
+    
+  </div>
+
+<!-- Buttons -->
+<div style="text-align:center">
+  <button id="calcBtn" onclick="evalMS()">Υπολογισμός</button>
+  <button id="printBtn" onclick="window.print()">Εκτύπωση</button>
+  <button id="clearBtn" onclick="clearAll()">Καθαρισμός</button>
+  <button id="clearStackBtn" onclick="clearStack()">Καθαρισμός όλων των reports</button>
+</div>
+
+<div id="out"></div>
+<div id="report"></div>
+
+<hr>
+
+<div style="font-size:0.88rem;line-height:1.45;color:#d0d4ff;text-align:center">
+<strong>Ορισμός:</strong> Το μεταβολικό σύνδρομο (IDF) χαρακτηρίζεται από κεντρική παχυσαρκία (περίμετρος μέσης ≥94cm για άνδρες ή ≥80cm για γυναίκες, για τον ευρωπαϊκό πληθυσμό) και τουλάχιστον δύο από τα εξής: τριγλυκερίδια ≥150 mg/dL· HDL &lt;40 mg/dL (άνδρες) ή &lt;50 mg/dL (γυναίκες)· αρτηριακή πίεση ≥130/85 mmHg· γλυκόζη νηστείας ≥100 mg/dL.
+</div>
+
+<br><br>
+<div style="text-align:center;color:#6472a9">
+__________________________<br>
+Υπογραφή Ιατρού<br>
+Dr Γιαλαβούζης Σάββας
+</div>
+
+</div><!-- /.card -->
+
+<!-- ===== PRINT STACK AREA (goes at the very end) ===== -->
+<div id="printStack" style="max-width:980px;margin:0 auto 40px;"></div>
+
+<script>
+/* Helpers */
+function g(id){return document.getElementById(id).value}
+function num(id){let v=g(id);return v!==""?Number(v):null}
+
+/* BMI */
+function autoBMI(){
+ let w=num('w'), h=num('h');
+ let bmiEl=document.getElementById('bmi');
+ let cat=document.getElementById('bmicat');
+ if(w && h){
+   let m=h/100; 
+   let bmi=(w/(m*m));
+   bmiEl.value=bmi.toFixed(1);
+   if(bmi<18.5) cat.value="Λιποβαρής";
+   else if(bmi<25) cat.value="Φυσιολογικό";
+   else if(bmi<30) cat.value="Υπέρβαρος";
+   else cat.value="Παχυσαρκία";
+ } else {bmiEl.value="";cat.value=""}
+}
+
+/* dotted line helper */
+function dotted(left, right){
+  const dotsLen = Math.max(3, 50 - (left.length + right.length));
+  return left + " " + ".".repeat(dotsLen) + " " + right;
+}
+
+/* === Conversions === */
+function mgdl_to_mmol_chol(x){ return x*0.02586 }                  // cholesterol
+function a1c_percent_to_mmolmol(p){ return (p - 2.15) * 10.929 }   // HbA1c
+
+/* ===== SCORE2-Diabetes (Moderate region – Greece) ===== */
+const S2D_MODERATE = {
+  male: { beta: { cage:0.5368, smoker:0.4774, csbp:0.1322, diabetes:0.6457, ctchol:0.1102, chdl:-0.1087, smoke_cage:-0.0672, csbp_cage:-0.0268, diab_cage:-0.0983, ctchol_cage:-0.0181, chdl_cage:0.0095, cagediab:-0.0998, ca1c:0.0955, cegfr:-0.0591, cegfr2:0.0058, ca1c_cage:-0.0134, cegfr_cage:0.0115 }, S0:0.9605, scale1:-0.1565, scale2:0.8009 },
+  female:{ beta: { cage:0.6624, smoker:0.6139, csbp:0.1421, diabetes:0.8096, ctchol:0.1127, chdl:-0.1568, smoke_cage:-0.1122, csbp_cage:-0.0167, diab_cage:-0.1272, ctchol_cage:-0.0200, chdl_cage:0.0186, cagediab:-0.1180, ca1c:0.1173, cegfr:-0.0640, cegfr2:0.0062, ca1c_cage:-0.0196, cegfr_cage:0.0169 }, S0:0.9776, scale1:-0.3143, scale2:0.7701 }
+};
+
+/* Linear predictor & calibrated risk */
+function s2d_linear_predictor_Moderate({sex, age, sbp, tc_mgdl, hdl_mgdl, smokerYN, HbA1c_pct, eGFR, ageDM}){
+  const B = S2D_MODERATE[sex].beta;
+  const diabetes = 1;
+  const cage = (age - 60)/5;
+  const csbp = (sbp - 120)/20;
+
+  const tc_mmol  = mgdl_to_mmol_chol(tc_mgdl ?? 0);
+  const hdl_mmol = mgdl_to_mmol_chol(hdl_mgdl ?? 0);
+  const ctchol = tc_mmol - 6;
+  const chdl   = (hdl_mmol - 1.3)/0.5;
+
+  const smoker = (smokerYN === 'ΝΑΙ') ? 1 : 0;
+  const cagediab = diabetes * ((ageDM ?? 50) - 50)/5;
+
+  const a1c_mmolmol = (HbA1c_pct!=null) ? a1c_percent_to_mmolmol(HbA1c_pct) : null;
+  const ca1c = (a1c_mmolmol!=null) ? (a1c_mmolmol - 31)/9.34 : 0;
+
+  const lnEGFR = (eGFR!=null && eGFR>0) ? Math.log(eGFR) : null;
+  const cegfr  = (lnEGFR!=null) ? (lnEGFR - 4.5)/0.15 : 0;
+  const cegfr2 = cegfr * cegfr;
+
+  const smoke_cage = smoker * cage;
+  const csbp_cage  = csbp * cage;
+  const diab_cage  = diabetes * cage;
+  const ctchol_cage = ctchol * cage;
+  const chdl_cage   = chdl * cage;
+  const ca1c_cage   = ca1c * cage;
+  const cegfr_cage  = cegfr * cage;
+
+  let x = 0;
+  x += B.cage*cage + B.smoker*smoker + B.csbp*csbp + B.diabetes*diabetes;
+  x += B.ctchol*ctchol + B.chdl*chdl;
+  x += B.smoke_cage*smoke_cage + B.csbp_cage*csbp_cage + B.diab_cage*diab_cage;
+  x += B.ctchol_cage*ctchol_cage + B.chdl_cage*chdl_cage;
+  x += B.cagediab*cagediab + B.ca1c*ca1c + B.cegfr*cegfr + B.cegfr2*cegfr2;
+  x += B.ca1c_cage*ca1c_cage + B.cegfr_cage*cegfr_cage;
+  return x;
+}
+
+function s2d_risk10_calibrated_Moderate(sex, x){
+  const {S0, scale1, scale2} = S2D_MODERATE[sex];
+  const raw = 1 - Math.pow(S0, Math.exp(x));
+  const inner = scale1 + scale2 * Math.log(-Math.log(1 - raw));
+  const calibrated = 1 - Math.exp(-Math.exp(inner));
+  return {calibrated};
+}
+
+/* ASCVD (non-DM) */
+const PCE_WOMEN = {lnage:-29.799, lnage2:4.884, lntc:13.540, lnage_lntc:-3.114, lnhdl:-13.578, lnage_lnhdl:3.149, lnsbp_treated:2.019, lnsbp_untreated:1.957, smoker:7.574, lnage_smoker:-1.665, mean:-29.18, S0:0.9665};
+const PCE_MEN   = {lnage:12.344, lntc:11.853, lnage_lntc:-2.664, lnhdl:-7.990, lnage_lnhdl:1.769, lnsbp_treated:1.797, lnsbp_untreated:1.764, smoker:7.837, lnage_smoker:-1.795, mean:61.18, S0:0.9144};
+
+function ascvdRisk(age, sex, tc, hdl, sbp, treatedBP, smoker){
+  if(!(age && tc && hdl && sbp)) return {ok:false, msg:"ελλιπή στοιχεία"};
+  if(age<40 || age>79) return {ok:false, msg:"εκτός ορίων ηλικίας (40–79)"};
+  const lnAge = Math.log(age), lnTC=Math.log(tc), lnHDL=Math.log(hdl), lnSBP=Math.log(sbp);
+  if(sex==='female'){
+    const c=PCE_WOMEN;
+    let sum = c.lnage*lnAge + c.lnage2*Math.pow(lnAge,2) + c.lntc*lnTC + c.lnage_lntc*lnAge*lnTC + c.lnhdl*lnHDL + c.lnage_lnhdl*lnAge*lnHDL + (treatedBP?c.lnsbp_treated: c.lnsbp_untreated)*lnSBP + (smoker?c.smoker:0) + (smoker?c.lnage_smoker*lnAge:0);
+    const risk = 1 - Math.pow(c.S0, Math.exp(sum - c.mean));
+    return {ok:true, risk:risk};
+  } else {
+    const c=PCE_MEN;
+    let sum = c.lnage*lnAge + c.lntc*lnTC + c.lnage_lntc*lnAge*lnTC + c.lnhdl*lnHDL + c.lnage_lnhdl*lnAge*lnHDL + (treatedBP?c.lnsbp_treated: c.lnsbp_untreated)*lnSBP + (smoker?c.smoker:0) + (smoker?c.lnage_smoker*lnAge:0);
+    const risk = 1 - Math.pow(c.S0, Math.exp(sum - c.mean));
+    return {ok:true, risk:risk};
+  }
+}
+
+/* Lp(a) helpers */
+function lpa_to_mgdl(val, unit){
+  if(val==null || val==='' || isNaN(val)) return null;
+  const x = Number(val);
+  if(unit==='mgdl') return x;
+  if(unit==='nmol') return x/2.5; // approx
+  return x;
+}
+function lpa_category(mg){
+  if(mg==null) return {label:"", cls:""};
+  if(mg > 100) return {label:"Πολύ υψηλός κίνδυνος", cls:"lpa-very"};
+  if(mg > 50)  return {label:"Αυξημένος κίνδυνος", cls:"lpa-high"};
+  if(mg >= 30) return {label:"Μέτριος κίνδυνος: 30–50 mg/dL", cls:"lpa-mid"};
+  return {label:"Χαμηλός κίνδυνος", cls:"lpa-low"};
+}
+
+/* CKD-EPI 2021 eGFR (creatinine-only) */
+function egfr_ckdepi_2021(scr_mgdl, age, sex){
+  if(scr_mgdl==null || age==null || !sex) return null;
+  const k = (sex==='female') ? 0.7 : 0.9;
+  const a = (sex==='female') ? -0.241 : -0.302;
+  const minPart = Math.min(scr_mgdl/k, 1);
+  const maxPart = Math.max(scr_mgdl/k, 1);
+  const egfr = 142 * Math.pow(minPart, a) * Math.pow(maxPart, -1.200) * Math.pow(0.9938, age) * ((sex==='female')?1.012:1.0);
+  return egfr;
+}
+function egfr_stage(egfr){
+  if(egfr==null) return {stage:"", cls:""};
+  if(egfr>=90) return {stage:"G1", cls:"gfr-g1"};
+  if(egfr>=60) return {stage:"G2", cls:"gfr-g2"};
+  if(egfr>=45) return {stage:"G3a", cls:"gfr-g3"};
+  if(egfr>=30) return {stage:"G3b", cls:"gfr-g4"};
+  if(egfr>=15) return {stage:"G4", cls:"gfr-g4"};
+  return {stage:"G5", cls:"gfr-g5"};
+}
+
+/* ACR helpers with units */
+function ucr_to_mgdl(value, unit){
+  if(value==null || value==="") return null;
+  const v = Number(value);
+  if(unit==='mgdl') return v;
+  if(unit==='mmol') return v*113.12; // 1 mmol Cr ≈ 113.12 mg
+  return v;
+}
+function acr_mgg_from_inputs(albumin_mgL, ucr_value, ucr_unit){
+  if(albumin_mgL==null || ucr_value==null) return null;
+  if(ucr_unit==='mgdl'){
+    if(ucr_value<=0) return null;
+    return (albumin_mgL / ucr_value) * 100.0;
+  } else if(ucr_unit==='mmol'){
+    if(ucr_value<=0) return null;
+    // First get mg/mmol = Alb mg/L / Cr mmol/L, then mg/g = × 8.84
+    return (albumin_mgL / ucr_value) * 8.84;
+  }
+  return null;
+}
+function acr_category(acr){
+  if(acr==null) return {cat:"", label:"", cls:""};
+  if(acr<30) return {cat:"A1", label:"Φυσιολογική / ήπια", cls:"acr-a1"};
+  if(acr<=300) return {cat:"A2", label:"Μέτρια λευκωματουρία", cls:"acr-a2"};
+  return {cat:"A3", label:"Σοβαρή λευκωματουρία", cls:"acr-a3"};
+}
+
+/* KDIGO matrix handling */
+function kdigo_clear(){
+  const ids = ["G1A1","G1A2","G1A3","G2A1","G2A2","G2A3","G3aA1","G3aA2","G3aA3","G3bA1","G3bA2","G3bA3","G4A1","G4A2","G4A3","G5A1","G5A2","G5A3"];
+  ids.forEach(id=>{ const el=document.getElementById(id); if(el) el.textContent=""; });
+}
+function kdigo_mark(stageG, stageA){
+  const id = stageG + stageA;
+  const el = document.getElementById(id);
+  if(el){
+    el.innerHTML = "<span class='kd-mark'>&#10003;</span>"; // ✓ black
+  }
+}
+
+/* Auto-calcs for kidney module */
+function update_eGFR(){
+  const sex = g('s');
+  const age = num('age');
+  const scr = num('scr');
+  const eg = egfr_ckdepi_2021(scr, age, sex==='female'?'female':'male');
+  const out = document.getElementById('egfr_auto');
+  if(eg!=null && isFinite(eg)){
+    out.value = Math.round(eg);
+    if(g('dm')==='ΝΑΙ'){
+      const egField = document.getElementById('egfr');
+      if(egField) egField.value = Math.round(eg);
+    }
+  } else {
+    out.value = "";
+  }
+  update_KDIGO_from_values();
+
+// show KDIGO table only when both values exist
+(function(){
+ const kw=document.querySelector('.kdigo-wrap');
+ const eg=num('egfr_auto');
+ const ac=num('acr');
+ if(eg!=null && ac!=null) kw.style.display='block';
+ else kw.style.display='none';
+})();
+
+}
+function update_ACR(){
+  const alb = num('ualb');
+  const ucr = num('ucr');
+  const unit = document.getElementById('ucr_unit').value;
+  const val = acr_mgg_from_inputs(alb, ucr, unit);
+  const out = document.getElementById('acr');
+  if(val!=null && isFinite(val)){
+    out.value = Math.round(val);
+  } else {
+    out.value = "";
+  }
+  update_KDIGO_from_values();
+
+// show KDIGO table only when both values exist
+(function(){
+ const kw=document.querySelector('.kdigo-wrap');
+ const eg=num('egfr_auto');
+ const ac=num('acr');
+ if(eg!=null && ac!=null) kw.style.display='block';
+ else kw.style.display='none';
+})();
+
+}
+function update_KDIGO_from_values(){
+  kdigo_clear();
+  const eg = num('egfr_auto');
+  const acr = num('acr');
+  if(eg==null || acr==null) return;
+  // Determine G stage
+  let G="";
+  if(eg>=90) G="G1";
+  else if(eg>=60) G="G2";
+  else if(eg>=45) G="G3a";
+  else if(eg>=30) G="G3b";
+  else if(eg>=15) G="G4";
+  else G="G5";
+  // Determine A stage
+  let A="";
+  if(acr<30) A="A1";
+  else if(acr<=300) A="A2";
+  else A="A3";
+  kdigo_mark(G, A);
+}
+
+function kdigo_badge_text(){
+  const eg = num('egfr_auto');
+  const acr = num('acr');
+  if(eg==null || acr==null) return "—";
+  let G="";
+  if(eg>=90) G="G1";
+  else if(eg>=60) G="G2";
+  else if(eg>=45) G="G3a";
+  else if(eg>=30) G="G3b";
+  else if(eg>=15) G="G4";
+  else G="G5";
+
+  let A="";
+  if(acr<30) A="A1";
+  else if(acr<=300) A="A2";
+  else A="A3";
+
+  // Rough KDIGO risk mapping
+  let risk = "Πολύ Υψηλός";
+  const low = ( (G==="G1"||G==="G2") && A==="A1" );
+  const moderate = ( ((G==="G1"||G==="G2") && A==="A2") || (G==="G3a" && A==="A1") );
+  const high = ( ((G==="G1"||G==="G2") && A==="A3") || (G==="G3a" && A==="A2") || (G==="G3b" && A==="A1") );
+  if(low) risk = "Χαμηλός";
+  else if(moderate) risk = "Μέτριος";
+  else if(high) risk = "Υψηλός";
+
+  return G + "/" + A + " — " + risk;
+}
+
+
+
+/* === ESC 2023 LDL-C therapeutic target helpers === */
+function escRiskTierFromLabel(label){
+  if(!label) return "unknown";
+  const L = label.toLowerCase();
+  if(L.includes("πολύ υψη")) return "veryhigh";
+  if(L.includes("υψη")) return "high";
+  if(L.includes("χαμη") || L.includes("μέτρι")) return "lowmod";
+  return "unknown";
+}
+function escLDLtargetByTier(tier){
+  if(tier==="veryhigh") return "<55 mg/dL";
+  if(tier==="high")     return "<70 mg/dL";
+  if(tier==="lowmod")   return "<100 mg/dL";
+  return null;
+}
+
+
+/* Main evaluation */
+function evalMS(){
+ let riskLabelForTargets = null;
+ let name=g('n')||'';
+ let sex=g('s');
+ let age=num('age');
+ let wc=num('wc'),tg=num('tg'),hdl=num('hdl'),sbp=num('sbp'),dbp=num('dbp'),fpg=num('fpg');
+ let wcCut=(sex==='male'?94:80);
+ let central=(wc>=wcCut);
+ let c=[];
+ if(tg>=150)c.push('Τριγλυκερίδια');
+ if(hdl<(sex==='male'?40:50))c.push('HDL');
+ if(sbp>=130||dbp>=85)c.push('Αρτηριακή Πίεση');
+ if(fpg>=100)c.push('Γλυκόζη Νηστείας');
+ if(document.getElementById('t_lip').value==='ΝΑΙ')c.push('Αγωγή λιπιδίων');
+ if(document.getElementById('t_sug').value==='ΝΑΙ')c.push('Αγωγή σακχάρου');
+ if(document.getElementById('t_htn').value==='ΝΑΙ')c.push('Αγωγή υπέρτασης');
+
+ let ok=central && c.length>=2;
+ document.getElementById('out').innerText = ok?'Μεταβολικό σύνδρομο: ΝΑΙ':'Μεταβολικό σύνδρομο: ΟΧΙ';
+
+ // Kidney auto-updates
+ update_eGFR();
+ update_ACR();
+
+ let now=new Date();
+ let stamp=now.toLocaleDateString()+' '+now.toLocaleTimeString();
+ let bmi=document.getElementById('bmi').value||'';
+ let bcat=document.getElementById('bmicat').value||'';
+ let wcStatus = (wc==null||isNaN(wc)) ? "" : (central ? "πάνω από IDF" : "κάτω από IDF");
+
+ let rep = "Ημερομηνία: "+stamp+
+ "\nΑσθενής: "+name+
+ "\n"+(function(){
+  var cls = (bcat==="Λιποβαρής")?"bmi-under"
+           :(bcat==="Φυσιολογικό")?"bmi-normal"
+           :(bcat==="Υπέρβαρος")?"bmi-over"
+           :"bmi-obese";
+  var line = dotted("BMI: "+bmi, bcat||"");
+  return (bcat? line.replace(bcat,"<span class='"+cls+"'>"+bcat+"</span>") : line);
+})()+
+ "\n"+dotted("WC: "+(wc||"—")+" cm", wcStatus);
+
+ rep += "\nΜεταβολικό σύνδρομο: "+(ok?"ΝΑΙ":"ΟΧΙ");
+
+ let ALL=[
+  {t:"Τριγλυκερίδια",v:(tg>=150)},
+  {t:"HDL",v:(hdl<(sex==='male'?40:50))},
+  {t:"Αρτηριακή Πίεση",v:(sbp>=130||dbp>=85)},
+  {t:"Γλυκόζη Νηστείας",v:(fpg>=100)},
+  {t:"Αγωγή λιπιδίων",v:(document.getElementById('t_lip').value==='ΝΑΙ')},
+  {t:"Αγωγή σακχάρου",v:(document.getElementById('t_sug').value==='ΝΑΙ')},
+  {t:"Αγωγή υπέρτασης",v:(document.getElementById('t_htn').value==='ΝΑΙ')}
+ ];
+ rep += "\n\nΚριτήρια αναλυτικά:\n" + ALL.filter(x=>x.v===true).map(x=> "✓ "+x.t ).join("\n");
+
+ const dmYN = (g('dm')==='ΝΑΙ');
+ const sexKey = (sex==='female' ? 'female' : 'male');
+ const tcVal = num('tc');
+
+ // --- FIX SCORE2 mg/dL → mmol/L (global once) ---
+const tc_mmol  = mgdl_to_mmol_chol(tcVal);
+const hdl_mmol = mgdl_to_mmol_chol(hdl);
+if(dmYN){
+   // Use egfr field if set, else egfr_auto
+   let eg = num('egfr'); if(eg==null) eg = num('egfr_auto');
+   if(age && sbp && tcVal && hdl && eg!=null){
+     const x = s2d_linear_predictor_Moderate({
+       sex: sexKey, age: age, sbp: sbp, tc_mgdl: tcVal, hdl_mgdl: hdl,
+       smokerYN: g('smoke'), HbA1c_pct: num('hbA1c'), eGFR: eg, ageDM: num('age_dm_dx')
+     });
+     const r = s2d_risk10_calibrated_Moderate(sexKey, x);
+     const pct = Math.max(0, Math.min(95, r.calibrated*100));
+     let label, cls;
+     if(pct < 5){ label = "Χαμηλού κινδύνου"; cls = "s2d-low"; }
+     else if(pct < 10){ label = "Μέτριου κινδύνου"; cls = "s2d-mid"; }
+     else if(pct < 20){ label = "Υψηλού κινδύνου"; cls = "s2d-high"; }
+     else { label = "Πολύ υψηλού κινδύνου"; cls = "s2d-vhigh"; }
+     riskLabelForTargets = label;
+     rep += "\n\nΚαρδιαγγειακός κίνδυνος SCORE2-Diabetes: "
+          + pct.toFixed(1) + "% (" + "<span class='"+cls+"'>"+label+"</span>)";
+   } else {
+     rep += "\n\nΚαρδιαγγειακός κίνδυνος SCORE2-Diabetes: N/A (ελλιπή στοιχεία)";
+   }
+ 
+} else {
+   const smokerYN = (g('smoke') === 'ΝΑΙ') ? 1 : 0;
+   const sexKey_nonDM = (sex === 'female' ? 'female' : 'male');
+
+   if (!(age && sbp && tcVal && hdl)) {
+     rep += "\n\nΚαρδιαγγειακός κίνδυνος SCORE2: N/A (ελλιπή στοιχεία)";
+   } else if (age >= 40) {
+     const risk = (age >= 70)
+       ? score2OP_nonDM_moderate(age, sexKey_nonDM, smokerYN, sbp, tc_mmol, hdl_mmol)
+       : score2_nonDM_moderate(age, sexKey_nonDM, smokerYN, sbp, tc_mmol, hdl_mmol);
+
+     const pct = (risk * 100);
+     const cat = score2_category(age, pct);
+     const tag = "<span class='" + cat.cls + "'>" + cat.label + "</span>";
+     riskLabelForTargets = cat.label;
+
+     if (age >= 70) {
+       rep += "\n\nΚαρδιαγγειακός κίνδυνος SCORE2-OP: " + pct.toFixed(1) + "% (" + tag + ")";
+     } else {
+       rep += "\n\nΚαρδιαγγειακός κίνδυνος SCORE2: " + pct.toFixed(1) + "% (" + tag + ")";
+     }
+   } else {
+     rep += "\n\nΚαρδιαγγειακός κίνδυνος SCORE2: N/A (ηλικία <40)";
+   }
+
+let smoker = (g('smoke')==='ΝΑΙ');
+   let treatedBP = (g('t_htn')==='ΝΑΙ');
+   let ascvd = ascvdRisk(age, (sex==='female'?'female':'male'), tcVal, hdl, sbp, treatedBP, smoker);
+   if(ascvd.ok){
+     let pctA = ascvd.risk*100;
+     const tag = (pctA<5)?"<span class='ascvd-low'>Χαμηλού κινδύνου</span>":
+                 (pctA<7.5)?"<span class='ascvd-border'>Οριακού κινδύνου</span>":
+                 (pctA<20)?"<span class='ascvd-mid'>Μετρίου κινδύνου</span>":
+                           "<span class='ascvd-high'>Υψηλού κινδύνου</span>";
+     rep += "\nASCVD 10-ετίας: "+pctA.toFixed(1)+"% ("+tag+")";
+   } else {
+     rep += "\nASCVD 10-ετίας: N/A ("+ascvd.msg+")";
+   }
+ }
+
+ // Lp(a)
+ (function(){
+   const raw = document.getElementById('lpa')?.value ?? "";
+   if(raw==="") return;
+   const unit = document.getElementById('lpa_unit')?.value || 'mgdl';
+   const mg = lpa_to_mgdl(raw, unit);
+   if(mg==null) return;
+   const mgDisplay = (unit==='mgdl') ? Number(raw).toFixed(1) : Number(mg).toFixed(1);
+   const cat = lpa_category(mg);
+   rep += "\nLp(a): " + mgDisplay + " mg/dL — " + (cat.label ? ("<span class='"+cat.cls+"'>"+cat.label+"</span>") : "");
+ })();
+
+ // eGFR line — always show if calculable
+ (function(){
+   const eg = num('egfr_auto');
+   if(eg!=null){
+     const st = egfr_stage(eg);
+     rep += "\neGFR (CKD‑EPI 2021): " + eg + " mL/min/1.73m²" + (st.stage?(" — <span class='"+st.cls+"'>"+st.stage+"</span>"):"");
+   }
+ })();
+
+ // ACR line — show if calculable
+ (function(){
+   const acr = num('acr');
+   if(acr!=null){
+     const ac = acr_category(acr);
+     const greek = ac.cat==="A1"?"Φυσιολογική / ήπια":(ac.cat==="A2"?"Μέτρια λευκωματουρία":"Σοβαρή λευκωματουρία");
+     rep += "\nACR (mg/g): " + acr + " — <span class='"+ac.cls+"'>" + ac.cat + " ("+ greek +")</span>";
+   }
+ })();
+
+ document.getElementById('report').style.display='block';
+
+ // === Inject personalised therapeutic target (ESC 2023) ===
+ (function(){
+   const tier = escRiskTierFromLabel(riskLabelForTargets);
+   const tgt = escLDLtargetByTier(tier);
+   if(tgt){
+     rep += "\nΘεραπευτικός στόχος LDL-C (ESC 2023): " + tgt;
+   }
+ })();
+
+ 
+ // Mark placeholder for KDIGO visual badge (already shown above table)
+ rep += "\nKDIGO: badge_here";
+ (function(){
+  const kd = kdigo_badge_text();
+  const htmlRep = rep.replace('badge_here', kd)
+                     .replace(/✓/g,'<span class="tick">✓</span>')
+                     .replace(/✗/g,'<span class="cross">✗</span>');
+  const repEl = document.getElementById('report');
+  repEl.innerHTML = htmlRep;
+  // auto push disabled
+})();
+
+ 
+}
+
+/* Clear inputs/preview (does not touch the printStack) */
+function clearAll(){
+ let ids=['n','age','wc','tg','hdl','fpg','sbp','dbp','w','h','bmi','bmicat','t_lip','t_sug','t_htn','tc','hbA1c','egfr','age_dm_dx','lpa','scr','ualb','ucr','acr','egfr_auto'];
+ ids.forEach(id=>{const el=document.getElementById(id); if(el) el.value='';});
+ document.getElementById('s').value='male';
+ document.getElementById('smoke').value='ΟΧΙ';
+ const dmSel=document.getElementById('dm'); if(dmSel){ dmSel.value='ΟΧΙ'; onDMchange(); }
+ const lpaU=document.getElementById('lpa_unit'); if(lpaU) lpaU.value='mgdl';
+ const ucrU=document.getElementById('ucr_unit'); if(ucrU) ucrU.value='mgdl';
+ document.getElementById('out').innerText='';
+ document.getElementById('report').style.display='none';
+ kdigo_clear();
+}
+
+/* Clear the whole print stack (history) */
+function clearStack(){
+  document.getElementById('printStack').innerHTML = "";
+  // Optional: scroll to top after clearing
+  // window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+/* Enter→next */
+function enableEnterNext(){
+  const order = Array.from(document.querySelectorAll('input,select'));
+  order.forEach((el,i)=>{
+    el.addEventListener('keydown',ev=>{
+      if(ev.key==='Enter'){
+        ev.preventDefault();
+        if(order[i+1]) order[i+1].focus();
+      }
+    });
+  });
+}
+window.addEventListener('DOMContentLoaded',enableEnterNext);
+
+/* DM toggle show/hide */
+function onDMchange(){
+  const dm = document.getElementById('dm').value === 'ΝΑΙ';
+  const ids = ['hbA1c','egfr','age_dm_dx'];
+  ids.forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    const wrap = el.parentElement;
+    if(wrap) wrap.style.display = dm ? 'block' : 'none';
+    if(!dm){ el.value = ''; }
+  });
+}
+window.addEventListener('DOMContentLoaded', onDMchange);
+
+/* Live listeners for kidney calcs */
+['scr','age','s'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el){ el.addEventListener('input', update_eGFR); el.addEventListener('change', update_eGFR); }
+});
+['ualb','ucr','ucr_unit'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el){ el.addEventListener('input', update_ACR); el.addEventListener('change', update_ACR); }
+});
+
+// Fix a minor bug from older snippet: keep eGFR in sync for SCORE2-DM
+document.addEventListener('input', ()=>{
+  if(document.getElementById('dm')?.value==='ΝΑΙ'){
+    const a = document.getElementById('egfr_auto');
+    const b = document.getElementById('egfr');
+    if(a && b){ b.value = a.value; }
+  }
+});
+</script>
+
+<script>
+// === SCORE2 / SCORE2-OP (Moderate region – Greece) for NON-DIABETICS ===
+// Source: SCORE2 (Eur Heart J 2021;42:2439–2454) & SCORE2-OP (Eur Heart J 2021;42:2455–2467).
+// Coefficients & scales taken from RiskScorescvd (CRAN) implementation (accessed 2025-11-10).
+
+function score2_nonDM_moderate(age, sex, smoker, sbp, totalChol, hdl){
+  // sex: "male" or "female"; smoker: 1/0
+  const diabetes = 0; // non-DM branch
+  let scale1, scale2;
+  if(sex==="male"){ scale1 = -0.1565; scale2 = 0.8009; }
+  else { scale1 = -0.3143; scale2 = 0.7701; }
+
+  if(sex==="male"){
+    const lp = (
+      0.3742*((age-60)/5.0) +
+      0.6012*smoker +
+      0.2777*((sbp-120)/20.0) +
+      0.6457*diabetes +
+      0.1458*((totalChol-6.0)/1.0) +
+      (-0.2698)*((hdl-1.3)/0.5) +
+      (-0.0755)*((age-60)/5.0)*smoker +
+      (-0.0255)*((age-60)/5.0)*((sbp-120)/20.0) +
+      (-0.0281)*((age-60)/5.0)*((totalChol-6.0)/1.0) +
+      0.0426*((age-60)/5.0)*((hdl-1.3)/0.5) +
+      (-0.0983)*((age-60)/5.0)*diabetes
+    );
+    const base = 1 - Math.pow(0.9605, Math.exp(lp));
+    const risk = 1 - Math.exp(-Math.exp(scale1 + scale2 * Math.log(-Math.log(1 - base))));
+    return Math.max(0, Math.min(0.95, risk)); // cap like DM block
+  } else {
+    const lp = (
+      0.4648*((age-60)/5.0) +
+      0.7744*smoker +
+      0.3131*((sbp-120)/20.0) +
+      0.8096*diabetes +
+      0.1002*((totalChol-6.0)/1.0) +
+      (-0.2606)*((hdl-1.3)/0.5) +
+      (-0.1088)*((age-60)/5.0)*smoker +
+      (-0.0277)*((age-60)/5.0)*((sbp-120)/20.0) +
+      (-0.0226)*((age-60)/5.0)*((totalChol-6.0)/1.0) +
+      0.0613*((age-60)/5.0)*((hdl-1.3)/0.5) +
+      (-0.1272)*((age-60)/5.0)*diabetes
+    );
+    const base = 1 - Math.pow(0.9776, Math.exp(lp));
+    const risk = 1 - Math.exp(-Math.exp(scale1 + scale2 * Math.log(-Math.log(1 - base))));
+    return Math.max(0, Math.min(0.95, risk));
+  }
+}
+
+function score2OP_nonDM_moderate(age, sex, smoker, sbp, totalChol, hdl){
+  // sex: "male" or "female"; smoker: 1/0; for ages 70–89
+  const diabetes = 0;
+  let scale1, scale2;
+  if(sex==="male"){ scale1 = 0.01;  scale2 = 1.25; }
+  else {            scale1 = -0.10; scale2 = 1.10; }
+
+  if(sex==="male"){
+    const lp = (
+      0.0634*(age-73) +
+      0.4245*diabetes +
+      0.3524*smoker +
+      0.0094*(sbp-150) +
+      0.0850*(totalChol-6.0) +
+      (-0.3564)*(hdl-1.4) +
+      (-0.0174)*(age-73)*diabetes +
+      (-0.0247)*(age-73)*smoker +
+      (-0.0005)*(age-73)*(sbp-150) +
+      0.0073*(age-73)*(totalChol-6.0) +
+      0.0091*(age-73)*(hdl-1.4)
+    );
+    const base = 1 - Math.pow(0.7576, Math.exp(lp - 0.0929));
+    const risk = 1 - Math.exp(-Math.exp(scale1 + scale2 * Math.log(-Math.log(1 - base))));
+    return Math.max(0, Math.min(0.95, risk));
+  } else {
+    const lp = (
+      0.0789*(age-73) +
+      0.6010*diabetes +
+      0.4921*smoker +
+      0.0102*(sbp-150) +
+      0.0605*(totalChol-6.0) +
+      (-0.3040)*(hdl-1.4) +
+      (-0.0107)*(age-73)*diabetes +
+      (-0.0255)*(age-73)*smoker +
+      (-0.0004)*(age-73)*(sbp-150) +
+      (-0.0009)*(age-73)*(totalChol-6.0) +
+      0.0154*(age-73)*(hdl-1.4)
+    );
+    const base = 1 - Math.pow(0.8082, Math.exp(lp - 0.229));
+    const risk = 1 - Math.exp(-Math.exp(scale1 + scale2 * Math.log(-Math.log(1 - base))));
+    return Math.max(0, Math.min(0.95, risk));
+  }
+}
+
+function score2_category(age, riskPct){
+  // ESC age-specific cutoffs
+  if(age < 50){
+    if(riskPct < 2.5) return {label:"Χαμηλού–Μέτριου κινδύνου", cls:"s2d-low"};
+    if(riskPct < 7.5) return {label:"Υψηλού κινδύνου", cls:"s2d-mid"};
+    return {label:"Πολύ υψηλού κινδύνου", cls:"s2d-high"};
+  } else if(age <= 69){
+    if(riskPct < 5) return {label:"Χαμηλού–Μέτριου κινδύνου", cls:"s2d-low"};
+    if(riskPct < 10) return {label:"Υψηλού κινδύνου", cls:"s2d-mid"};
+    return {label:"Πολύ υψηλού κινδύνου", cls:"s2d-high"};
+  } else {
+    if(riskPct < 7.5) return {label:"Χαμηλού–Μέτριου κινδύνου", cls:"s2d-low"};
+    if(riskPct < 15) return {label:"Υψηλού κινδύνου", cls:"s2d-mid"};
+    return {label:"Πολύ υψηλού κινδύνου", cls:"s2d-high"};
+  }
+}
+</script>
+
+</body>
+</html>
