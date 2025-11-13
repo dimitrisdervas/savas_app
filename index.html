@@ -4,6 +4,106 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Μεταβολικό Σύνδρομο — IDF Europe (Full)</title>
+
+<!--
+╔══════════════════════════════════════════════════════════════════════════════╗
+║  HOLISTIC CARDIO-NEPHRO-METABOLIC RISK ASSESSMENT CALCULATOR                ║
+║  Dr. Savas Yialavouzis - General Family Physician                           ║
+╚══════════════════════════════════════════════════════════════════════════════╝
+
+FILE STRUCTURE (1,300+ lines):
+═══════════════════════════════════════════════════════════════════════════════
+
+Lines 7-161:      CSS STYLES (~155 lines)
+                  - Risk category colors (ASCVD, SCORE2-DM, BMI, Lp(a), ACR, eGFR)
+                  - KDIGO matrix styling (6×3 grid)
+                  - Test button styles
+                  - Print optimizations
+
+Lines 162-354:    HTML STRUCTURE (~193 lines)
+                  - Patient demographics & vitals
+                  - Test data buttons (8 scenarios)
+                  - Input form (24 fields)
+                  - KDIGO matrix table
+                  - Action buttons & output areas
+
+Lines 355-1300+:  JAVASCRIPT (~950 lines)
+═════════════════════════════════════════════════════════════════════════════
+
+JAVASCRIPT SECTIONS:
+────────────────────────────────────────────────────────────────────────────
+
+1. UTILITIES & HELPERS (lines 355-450)
+   - g(), num() - DOM value getters
+   - autoBMI() - BMI calculation
+   - fillTest() - Test data loader (8 scenarios)
+   - dotted() - Report formatting
+
+2. MEDICAL CONSTANTS (lines 451-540)
+   - SCORE2-Diabetes coefficients (moderate-risk Greece)
+   - Greek population means (Attica study, Table 1)
+   - ASCVD/PCE coefficients (Pooled Cohort Equations)
+
+3. HELLENIC SCORE II+ (lines 541-620)
+   - Greek population calibration
+   - Diabetes adjustment (×1.39 men, ×1.48 women)
+   - Lp(a) adjustment (×1.29 men, ×1.31 women)
+   - Age/sex-specific interpolation
+
+4. CARDIOVASCULAR RISK CALCULATORS (lines 621-690)
+   - ASCVD 10-year risk (ages 40-79)
+   - SCORE2-Diabetes linear predictor
+   - Risk categorization functions
+
+5. KIDNEY FUNCTION MODULE (lines 691-850)
+   - eGFR calculation (CKD-EPI 2021, no race adjustment)
+   - ACR calculation (dual unit support)
+   - KDIGO matrix logic (6 GFR stages × 3 ACR categories)
+   - Stage categorization (G1-G5, A1-A3)
+
+6. MAIN EVALUATION ENGINE (lines 851-1150)
+   - evalMS() - Primary calculation coordinator
+   - Metabolic syndrome assessment (IDF criteria)
+   - All risk score calculations
+   - Report generation with color-coded output
+
+7. UI HELPERS & UTILITIES (lines 1151-1220)
+   - clearAll() - Form reset
+   - enableEnterNext() - Keyboard navigation
+   - onDMchange() - Diabetes field visibility
+   - clearStack() - Report history management
+
+8. SCORE2/SCORE2-OP ALGORITHMS (lines 1221-1300+)
+   - score2_nonDM_moderate() - Ages 40-69
+   - score2OP_nonDM_moderate() - Ages 70-89
+   - score2_category() - Risk tier mapping
+
+═══════════════════════════════════════════════════════════════════════════════
+MEDICAL ALGORITHMS IMPLEMENTED:
+───────────────────────────────────────────────────────────────────────────────
+✓ SCORE2 (ESC 2021) - 10-year CV risk, non-diabetics 40-69
+✓ SCORE2-OP (ESC 2021) - 10-year CV risk, non-diabetics 70-89
+✓ SCORE2-Diabetes (ESC 2021) - Diabetics with HbA1c & eGFR
+✓ HellenicSCORE II+ (Panagiotakos 2024) - Greek-calibrated with Lp(a) & DM
+✓ ASCVD/PCE (ACC/AHA) - Pooled Cohort Equations, ages 40-79
+✓ CKD-EPI 2021 - eGFR without race adjustment
+✓ KDIGO - CKD risk stratification matrix
+✓ IDF Metabolic Syndrome - European cutoffs
+✓ ESC 2023 LDL-C Targets - Risk-stratified goals
+
+═══════════════════════════════════════════════════════════════════════════════
+DEPLOYMENT:
+───────────────────────────────────────────────────────────────────────────────
+Single-file architecture for:
+  ✓ Offline capability (no internet required)
+  ✓ Zero dependencies (all calculations self-contained)
+  ✓ Simple deployment (copy one file)
+  ✓ Print-ready reports (media query optimized)
+  ✓ Works on any modern browser (Chrome, Firefox, Safari, Edge)
+
+═══════════════════════════════════════════════════════════════════════════════
+-->
+
 <style>
 /* ASCVD labels */
 .ascvd-low{color:#10b981;font-weight:700}
@@ -353,6 +453,12 @@ Dr Γιαλαβούζης Σάββας
 <div id="printStack" style="max-width:980px;margin:0 auto 40px;"></div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SECTION 1: UTILITIES & HELPERS
+ * ═══════════════════════════════════════════════════════════════════════════
+ * DOM helpers, BMI calculation, test data loader, formatting functions
+ * ═════════════════════════════════════════════════════════════════════════ */
+
 /* Helpers */
 function g(id){return document.getElementById(id).value}
 function num(id){let v=g(id);return v!==""?Number(v):null}
@@ -449,6 +555,13 @@ function fillTest(scenario) {
   update_ACR();
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SECTION 2: MEDICAL CONSTANTS & COEFFICIENTS
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Unit conversions, SCORE2-Diabetes coefficients, Greek population data,
+ * ASCVD/PCE coefficients for cardiovascular risk algorithms
+ * ═════════════════════════════════════════════════════════════════════════ */
+
 /* === Conversions === */
 function mgdl_to_mmol_chol(x){ return x*0.02586 }                  // cholesterol
 function a1c_percent_to_mmolmol(p){ return (p - 2.15) * 10.929 }   // HbA1c
@@ -506,6 +619,18 @@ function s2d_risk10_calibrated_Moderate(sex, x){
   const calibrated = 1 - Math.exp(-Math.exp(inner));
   return {calibrated};
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SECTION 3: HELLENIC SCORE II+ (Greek-Calibrated CV Risk)
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Reference: Panagiotakos et al., Hellenic J Cardiology 2024;79:3-14
+ *
+ * - Greek population means from Attica study (ages 40-65, 5-year intervals)
+ * - Base risk calculation using SCORE2 moderate-risk coefficients
+ * - Automatic diabetes adjustment: ×1.39 (men), ×1.48 (women)
+ * - Automatic Lp(a) adjustment (if >30 mg/dL): ×1.29 (men), ×1.31 (women)
+ * - Age range: 40-69 years (fatal + non-fatal CV events)
+ * ═════════════════════════════════════════════════════════════════════════ */
 
 /* ===== HellenicSCORE II+ (Greek calibration with Lp(a) & Diabetes) ===== */
 // Greek population means from Attica study (Table 1 in PDF)
@@ -629,6 +754,17 @@ function ascvdRisk(age, sex, tc, hdl, sbp, treatedBP, smoker){
     return {ok:true, risk:risk};
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SECTION 5: KIDNEY FUNCTION MODULE
+ * ═══════════════════════════════════════════════════════════════════════════
+ * - Lp(a) conversion & categorization
+ * - eGFR calculation (CKD-EPI 2021, no race adjustment)
+ * - ACR calculation (dual unit support: mg/dL or mmol/L)
+ * - KDIGO matrix logic (6 GFR stages × 3 ACR categories)
+ * - Stage categorization: G1-G5 (eGFR), A1-A3 (albuminuria)
+ * - Risk stratification: Low / Moderate / High / Very High
+ * ═════════════════════════════════════════════════════════════════════════ */
 
 /* Lp(a) helpers */
 function lpa_to_mgdl(val, unit){
@@ -825,6 +961,25 @@ function escLDLtargetByTier(tier){
   return null;
 }
 
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SECTION 6: MAIN EVALUATION ENGINE
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Primary calculation coordinator - evalMS() function
+ *
+ * Performs comprehensive assessment:
+ * 1. Metabolic Syndrome (IDF criteria with European cutoffs)
+ * 2. BMI categorization
+ * 3. Cardiovascular Risk Scores:
+ *    - SCORE2 / SCORE2-OP (non-diabetics, ages 40-89)
+ *    - SCORE2-Diabetes (diabetics with HbA1c & eGFR)
+ *    - HellenicSCORE II+ (Greek-calibrated with Lp(a) & diabetes adjustments)
+ *    - ASCVD (Pooled Cohort Equations, ages 40-79)
+ * 4. Kidney Function (eGFR, ACR, KDIGO matrix)
+ * 5. Lipoprotein(a) risk assessment
+ * 6. ESC 2023 LDL-C therapeutic targets
+ * 7. Comprehensive report generation with color-coded output
+ * ═════════════════════════════════════════════════════════════════════════ */
 
 /* Main evaluation */
 function evalMS(){
@@ -1103,6 +1258,13 @@ let smoker = (g('smoke')==='ΝΑΙ');
  
 }
 
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SECTION 7: UI HELPERS & UTILITIES
+ * ═══════════════════════════════════════════════════════════════════════════
+ * Form management, keyboard navigation, diabetes field visibility,
+ * report stack management
+ * ═════════════════════════════════════════════════════════════════════════ */
+
 /* Clear inputs/preview (does not touch the printStack) */
 function clearAll(){
  let ids=['n','age','wc','tg','hdl','fpg','sbp','dbp','w','h','bmi','bmicat','t_lip','t_sug','t_htn','tc','hbA1c','egfr','age_dm_dx','lpa','scr','ualb','ucr','acr','egfr_auto'];
@@ -1176,6 +1338,16 @@ document.addEventListener('input', ()=>{
 // === SCORE2 / SCORE2-OP (Moderate region – Greece) for NON-DIABETICS ===
 // Source: SCORE2 (Eur Heart J 2021;42:2439–2454) & SCORE2-OP (Eur Heart J 2021;42:2455–2467).
 // Coefficients & scales taken from RiskScorescvd (CRAN) implementation (accessed 2025-11-10).
+
+/* ═══════════════════════════════════════════════════════════════════════════
+ * SECTION 8: SCORE2/SCORE2-OP ALGORITHMS
+ * ═══════════════════════════════════════════════════════════════════════════
+ * European Society of Cardiology 2021 CV risk algorithms:
+ * - SCORE2 (non-diabetics, ages 40-69)
+ * - SCORE2-OP (Older Persons, ages 70-89)
+ * - Risk categorization by age group
+ * - Moderate-risk region calibration (includes Greece)
+ * ═════════════════════════════════════════════════════════════════════════ */
 
 function score2_nonDM_moderate(age, sex, smoker, sbp, totalChol, hdl){
   // sex: "male" or "female"; smoker: 1/0
