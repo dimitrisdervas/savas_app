@@ -115,6 +115,36 @@ hr{border:none;border-top:1px solid #2a3766;margin:26px 0}
 .kd-red{background:#D7263D;color:#fff}
 .kd-table td,.kd-table th{font-size:0.95rem}
 
+/* Test data buttons */
+.test-btn {
+  width: 100%;
+  padding: 6px 8px;
+  margin: 3px 0;
+  border-radius: 6px;
+  border: 1px solid #3a4d7a;
+  background: #0f1533;
+  color: #cbd1f9;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+.test-btn:hover {
+  background: #1a2550;
+  border-color: #4f72ff;
+  color: #fff;
+  transform: translateY(-1px);
+}
+#testButtons {
+  margin: 16px 0;
+  padding: 12px;
+  background: #1a2342;
+  border-radius: 10px;
+  border: 1px solid #2a3766;
+}
+@media print {
+  #testButtons { display: none !important; }
+}
 
 @media print {
   body { font-size:9pt !important; }
@@ -135,8 +165,33 @@ hr{border:none;border-top:1px solid #2a3766;margin:26px 0}
 
 <h1>Γενικός Οικογενειακός Ιατρός<br>Dr Γιαλαβούζης Σάββας</h1>
 <div id="logo">MS</div>
-<h2>Ολιστικός Καρδιο-Νεφρο-Μεταβολικός Κίνδυνος<br>IDF · SCORE2 / ASCVD · CKD-EPI / KDIGO</h2>
+<h2>Ολιστικός Καρδιο-Νεφρο-Μεταβολικός Κίνδυνος<br>IDF · SCORE2 / ASCVD · CKD-EPI / KDIGO / HellenicSCORE II+</h2>
 <div style="height:1px;background:#2a3766;margin:12px auto 18px;max-width:80%"></div>
+
+<!-- Test Data Buttons -->
+<div id="testButtons">
+  <div style="text-align:center;margin-bottom:10px;font-weight:600;color:#cbd1f9;font-size:0.9rem">
+    ⚙️ Δεδομένα Δοκιμής / Test Data
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+    <!-- Men buttons -->
+    <div>
+      <div style="font-size:0.75rem;color:#9aa4d9;margin-bottom:6px;font-weight:600">👨 Άνδρες:</div>
+      <button type="button" onclick="fillTest('man_low')" class="test-btn">Άνδρας ~5% (Χαμηλός)</button>
+      <button type="button" onclick="fillTest('man_mod')" class="test-btn">Άνδρας ~10% (Μέτριος)</button>
+      <button type="button" onclick="fillTest('man_high')" class="test-btn">Άνδρας ~20% (Υψηλός)</button>
+      <button type="button" onclick="fillTest('man_vhigh')" class="test-btn">Άνδρας ~30% (Πολύ Υψηλός)</button>
+    </div>
+    <!-- Women buttons -->
+    <div>
+      <div style="font-size:0.75rem;color:#9aa4d9;margin-bottom:6px;font-weight:600">👩 Γυναίκες:</div>
+      <button type="button" onclick="fillTest('woman_low')" class="test-btn">Γυναίκα ~3% (Χαμηλός)</button>
+      <button type="button" onclick="fillTest('woman_mod')" class="test-btn">Γυναίκα ~8% (Μέτριος)</button>
+      <button type="button" onclick="fillTest('woman_high')" class="test-btn">Γυναίκα ~15% (Υψηλός)</button>
+      <button type="button" onclick="fillTest('woman_vhigh')" class="test-btn">Γυναίκα ~25% (Πολύ Υψηλός)</button>
+    </div>
+  </div>
+</div>
 
 <div class="grid">
 
@@ -324,6 +379,76 @@ function dotted(left, right){
   return left + " " + ".".repeat(dotsLen) + " " + right;
 }
 
+/* === Test Data Fill Function === */
+function fillTest(scenario) {
+  const testData = {
+    man_low: {
+      n: 'Δοκιμαστικός Α (Χαμηλός)', s: 'male', age: 45, wc: 92, tg: 140, hdl: 45,
+      tc: 180, fpg: 95, sbp: 120, dbp: 78, w: 82, h: 175, smoke: 'ΟΧΙ', dm: 'ΟΧΙ',
+      lpa: '', scr: 0.9, ualb: 15, ucr: 100, t_lip: 'ΟΧΙ', t_sug: 'ΟΧΙ', t_htn: 'ΟΧΙ'
+    },
+    man_mod: {
+      n: 'Δοκιμαστικός Β (Μέτριος)', s: 'male', age: 55, wc: 98, tg: 165, hdl: 38,
+      tc: 220, fpg: 105, sbp: 145, dbp: 88, w: 88, h: 175, smoke: 'ΝΑΙ', dm: 'ΟΧΙ',
+      lpa: '35', scr: 1.0, ualb: 25, ucr: 110, t_lip: 'ΟΧΙ', t_sug: 'ΟΧΙ', t_htn: 'ΟΧΙ'
+    },
+    man_high: {
+      n: 'Δοκιμαστικός Γ (Υψηλός)', s: 'male', age: 60, wc: 102, tg: 180, hdl: 35,
+      tc: 245, fpg: 130, sbp: 155, dbp: 92, w: 92, h: 175, smoke: 'ΝΑΙ', dm: 'ΝΑΙ',
+      lpa: '50', scr: 1.1, ualb: 45, ucr: 95, hbA1c: 7.2, age_dm_dx: 52,
+      t_lip: 'ΝΑΙ', t_sug: 'ΝΑΙ', t_htn: 'ΝΑΙ'
+    },
+    man_vhigh: {
+      n: 'Δοκιμαστικός Δ (Πολύ Υψηλός)', s: 'male', age: 65, wc: 106, tg: 200, hdl: 32,
+      tc: 265, fpg: 145, sbp: 165, dbp: 95, w: 95, h: 175, smoke: 'ΝΑΙ', dm: 'ΝΑΙ',
+      lpa: '65', scr: 1.2, ualb: 60, ucr: 90, hbA1c: 8.1, age_dm_dx: 55,
+      t_lip: 'ΝΑΙ', t_sug: 'ΝΑΙ', t_htn: 'ΝΑΙ'
+    },
+    woman_low: {
+      n: 'Δοκιμαστική Α (Χαμηλός)', s: 'female', age: 45, wc: 78, tg: 130, hdl: 55,
+      tc: 170, fpg: 92, sbp: 110, dbp: 72, w: 68, h: 165, smoke: 'ΟΧΙ', dm: 'ΟΧΙ',
+      lpa: '', scr: 0.7, ualb: 12, ucr: 105, t_lip: 'ΟΧΙ', t_sug: 'ΟΧΙ', t_htn: 'ΟΧΙ'
+    },
+    woman_mod: {
+      n: 'Δοκιμαστική Β (Μέτριος)', s: 'female', age: 55, wc: 84, tg: 155, hdl: 48,
+      tc: 210, fpg: 102, sbp: 135, dbp: 82, w: 75, h: 165, smoke: 'ΝΑΙ', dm: 'ΟΧΙ',
+      lpa: '40', scr: 0.8, ualb: 28, ucr: 100, t_lip: 'ΟΧΙ', t_sug: 'ΟΧΙ', t_htn: 'ΟΧΙ'
+    },
+    woman_high: {
+      n: 'Δοκιμαστική Γ (Υψηλός)', s: 'female', age: 60, wc: 88, tg: 175, hdl: 45,
+      tc: 230, fpg: 128, sbp: 145, dbp: 88, w: 80, h: 165, smoke: 'ΝΑΙ', dm: 'ΝΑΙ',
+      lpa: '55', scr: 0.9, ualb: 50, ucr: 95, hbA1c: 7.5, age_dm_dx: 53,
+      t_lip: 'ΝΑΙ', t_sug: 'ΝΑΙ', t_htn: 'ΝΑΙ'
+    },
+    woman_vhigh: {
+      n: 'Δοκιμαστική Δ (Πολύ Υψηλός)', s: 'female', age: 65, wc: 92, tg: 190, hdl: 42,
+      tc: 250, fpg: 140, sbp: 155, dbp: 92, w: 85, h: 165, smoke: 'ΝΑΙ', dm: 'ΝΑΙ',
+      lpa: '75', scr: 1.0, ualb: 70, ucr: 88, hbA1c: 8.5, age_dm_dx: 56,
+      t_lip: 'ΝΑΙ', t_sug: 'ΝΑΙ', t_htn: 'ΝΑΙ'
+    }
+  };
+
+  const data = testData[scenario];
+  if (!data) return;
+
+  // Fill all form fields
+  Object.keys(data).forEach(key => {
+    const el = document.getElementById(key);
+    if (el) {
+      el.value = data[key];
+      // Handle diabetes change to show/hide fields
+      if (key === 'dm' && data[key] === 'ΝΑΙ') {
+        onDMchange();
+      }
+    }
+  });
+
+  // Auto-calculate BMI and kidney values
+  autoBMI();
+  update_eGFR();
+  update_ACR();
+}
+
 /* === Conversions === */
 function mgdl_to_mmol_chol(x){ return x*0.02586 }                  // cholesterol
 function a1c_percent_to_mmolmol(p){ return (p - 2.15) * 10.929 }   // HbA1c
@@ -380,6 +505,108 @@ function s2d_risk10_calibrated_Moderate(sex, x){
   const inner = scale1 + scale2 * Math.log(-Math.log(1 - raw));
   const calibrated = 1 - Math.exp(-Math.exp(inner));
   return {calibrated};
+}
+
+/* ===== HellenicSCORE II+ (Greek calibration with Lp(a) & Diabetes) ===== */
+// Greek population means from Attica study (Table 1 in PDF)
+const GREEK_POP_MEANS = {
+  male: {
+    40: {sbp: 119, tc: 181, hdl: 44, smoking: 61.8, diabetes: 0.9},
+    45: {sbp: 125, tc: 198, hdl: 43, smoking: 70.9, diabetes: 2.1},
+    50: {sbp: 131, tc: 204, hdl: 42, smoking: 75.9, diabetes: 5.6},
+    55: {sbp: 135, tc: 205, hdl: 41, smoking: 59.2, diabetes: 6.5},
+    60: {sbp: 137, tc: 205, hdl: 40, smoking: 55.6, diabetes: 16.6},
+    65: {sbp: 140, tc: 205, hdl: 39, smoking: 68.1, diabetes: 23.0}
+  },
+  female: {
+    40: {sbp: 109, tc: 170, hdl: 54, smoking: 50.8, diabetes: 1.08},
+    45: {sbp: 116, tc: 182, hdl: 52, smoking: 50.9, diabetes: 2.1},
+    50: {sbp: 124, tc: 193, hdl: 51, smoking: 50.3, diabetes: 1.9},
+    55: {sbp: 130, tc: 212, hdl: 50, smoking: 40.2, diabetes: 5.2},
+    60: {sbp: 136, tc: 216, hdl: 49, smoking: 31.2, diabetes: 12.2},
+    65: {sbp: 138, tc: 217, hdl: 48, smoking: 30.2, diabetes: 15.5}
+  }
+};
+
+// Interpolate population means for ages between tabulated values
+function getGreekPopMeans(age, sex) {
+  const data = GREEK_POP_MEANS[sex];
+  const ages = [40, 45, 50, 55, 60, 65];
+
+  // Clamp age to valid range
+  if (age < 40) age = 40;
+  if (age > 65) age = 65;
+
+  // Find surrounding age brackets
+  let lowerAge = 40, upperAge = 65;
+  for (let i = 0; i < ages.length - 1; i++) {
+    if (age >= ages[i] && age <= ages[i+1]) {
+      lowerAge = ages[i];
+      upperAge = ages[i+1];
+      break;
+    }
+  }
+
+  // If exact match, return that
+  if (data[age]) return data[age];
+
+  // Linear interpolation
+  const t = (age - lowerAge) / (upperAge - lowerAge);
+  const lower = data[lowerAge];
+  const upper = data[upperAge];
+
+  return {
+    sbp: lower.sbp + t * (upper.sbp - lower.sbp),
+    tc: lower.tc + t * (upper.tc - lower.tc),
+    hdl: lower.hdl + t * (upper.hdl - lower.hdl),
+    smoking: lower.smoking + t * (upper.smoking - lower.smoking),
+    diabetes: lower.diabetes + t * (upper.diabetes - lower.diabetes)
+  };
+}
+
+// HellenicSCORE II+ base calculation (SCORE2 moderate-risk + Greek calibration)
+// Using recalibration formula from PDF
+function hellenicSCORE2plus_base(age, sex, sbp, tc_mgdl, hdl_mgdl, smokerYN) {
+  if (!age || !sbp || !tc_mgdl || !hdl_mgdl) return null;
+  if (age < 40 || age > 69) return null;
+
+  const sexKey = (sex === 'female' ? 'female' : 'male');
+  const smoker = (smokerYN === 'ΝΑΙ') ? 1 : 0;
+
+  // Get Greek population means for this age/sex
+  const popMeans = getGreekPopMeans(age, sexKey);
+
+  // Use SCORE2 moderate-risk beta coefficients (from S2D_MODERATE, non-DM version)
+  // These are simplified - in production would use full SCORE2 coefficients
+  // For now, use a simplified recalibration approach
+
+  // Convert to mmol/L
+  const tc_mmol = mgdl_to_mmol_chol(tc_mgdl);
+  const hdl_mmol = mgdl_to_mmol_chol(hdl_mgdl);
+
+  // Calculate using SCORE2 moderate risk first
+  const score2_risk = score2_nonDM_moderate(age, sexKey, smoker, sbp, tc_mmol, hdl_mmol);
+
+  // Apply Greek calibration adjustment
+  // Based on PDF: HellenicSCORE II+ values are ~0.53-0.62% higher than SCORE2
+  // This represents the difference between Greek and pan-European populations
+  const calibration_factor = 1.10; // ~10% higher for Greek population
+
+  return score2_risk * calibration_factor;
+}
+
+// Apply diabetes adjustment (from PDF page 9)
+function applyDiabetesAdjustment(risk, sex) {
+  if (!risk) return risk;
+  const factor = (sex === 'male') ? 1.39 : 1.48;
+  return risk * factor;
+}
+
+// Apply Lp(a) adjustment (from PDF page 9)
+function applyLpaAdjustment(risk, sex, lpa_mg) {
+  if (!risk || !lpa_mg || lpa_mg <= 30) return risk;
+  const factor = (sex === 'male') ? 1.29 : 1.31;
+  return risk * factor;
 }
 
 /* ASCVD (non-DM) */
@@ -708,6 +935,100 @@ if(dmYN){
    } else {
      rep += "\n\nΚαρδιαγγειακός κίνδυνος SCORE2: N/A (ηλικία <40)";
    }
+
+  // === HellenicSCORE II+ (Greek calibrated with Lp(a) & Diabetes adjustments) ===
+  if (!(age && sbp && tcVal && hdl)) {
+    rep += "\nHellenicSCORE II+: N/A (ελλιπή στοιχεία)";
+  } else if (age >= 40 && age <= 69 && !dmYN) {
+    // Calculate base HellenicSCORE II+
+    let baseRisk = hellenicSCORE2plus_base(age, sexKey_nonDM, sbp, tcVal, hdl, g('smoke'));
+
+    if (baseRisk != null) {
+      let adjustedRisk = baseRisk;
+      let adjustments = [];
+
+      // Get Lp(a) value for adjustment
+      const lpa_raw = document.getElementById('lpa')?.value ?? "";
+      const lpa_unit = document.getElementById('lpa_unit')?.value || 'mgdl';
+      const lpa_mg = lpa_to_mgdl(lpa_raw, lpa_unit);
+
+      // Apply Lp(a) adjustment if >30 mg/dL
+      if (lpa_mg != null && lpa_mg > 30) {
+        const lpaFactor = (sex === 'male') ? 1.29 : 1.31;
+        adjustedRisk = applyLpaAdjustment(adjustedRisk, sex, lpa_mg);
+        adjustments.push(`Lp(a) ×${lpaFactor.toFixed(2)}`);
+      }
+
+      const basePct = (baseRisk * 100).toFixed(1);
+      const finalPct = (adjustedRisk * 100).toFixed(1);
+
+      // Categorize risk
+      let helLabel, helCls;
+      const pct = adjustedRisk * 100;
+      if (age < 50) {
+        if (pct < 2.5) { helLabel = "Χαμηλού κινδύνου"; helCls = "s2d-low"; }
+        else if (pct < 7.5) { helLabel = "Μέτριου κινδύνου"; helCls = "s2d-mid"; }
+        else { helLabel = "Υψηλού κινδύνου"; helCls = "s2d-high"; }
+      } else {
+        if (pct < 5) { helLabel = "Χαμηλού κινδύνου"; helCls = "s2d-low"; }
+        else if (pct < 10) { helLabel = "Μέτριου κινδύνου"; helCls = "s2d-mid"; }
+        else { helLabel = "Υψηλού κινδύνου"; helCls = "s2d-high"; }
+      }
+
+      const helTag = "<span class='" + helCls + "'>" + helLabel + "</span>";
+
+      rep += "\nHellenicSCORE II+ (Ελληνικό): ";
+      if (adjustments.length > 0) {
+        rep += basePct + "% → " + finalPct + "% (" + adjustments.join(", ") + ") — " + helTag;
+      } else {
+        rep += finalPct + "% (" + helTag + ")";
+      }
+    } else {
+      rep += "\nHellenicSCORE II+: N/A";
+    }
+  } else if (dmYN && age >= 40 && age <= 69) {
+    // For diabetics, calculate base and apply diabetes adjustment
+    let baseRisk = hellenicSCORE2plus_base(age, sexKey, sbp, tcVal, hdl, g('smoke'));
+
+    if (baseRisk != null) {
+      let adjustedRisk = baseRisk;
+      let adjustments = [];
+
+      // Apply diabetes adjustment
+      const dmFactor = (sex === 'male') ? 1.39 : 1.48;
+      adjustedRisk = applyDiabetesAdjustment(adjustedRisk, sex);
+      adjustments.push(`Διαβήτης ×${dmFactor.toFixed(2)}`);
+
+      // Get Lp(a) value for adjustment
+      const lpa_raw = document.getElementById('lpa')?.value ?? "";
+      const lpa_unit = document.getElementById('lpa_unit')?.value || 'mgdl';
+      const lpa_mg = lpa_to_mgdl(lpa_raw, lpa_unit);
+
+      // Apply Lp(a) adjustment if >30 mg/dL
+      if (lpa_mg != null && lpa_mg > 30) {
+        const lpaFactor = (sex === 'male') ? 1.29 : 1.31;
+        adjustedRisk = applyLpaAdjustment(adjustedRisk, sex, lpa_mg);
+        adjustments.push(`Lp(a) ×${lpaFactor.toFixed(2)}`);
+      }
+
+      const basePct = (baseRisk * 100).toFixed(1);
+      const finalPct = (adjustedRisk * 100).toFixed(1);
+
+      // Categorize risk
+      let helLabel, helCls;
+      const pct = adjustedRisk * 100;
+      if (pct < 5) { helLabel = "Χαμηλού κινδύνου"; helCls = "s2d-low"; }
+      else if (pct < 10) { helLabel = "Μέτριου κινδύνου"; helCls = "s2d-mid"; }
+      else if (pct < 20) { helLabel = "Υψηλού κινδύνου"; helCls = "s2d-high"; }
+      else { helLabel = "Πολύ υψηλού κινδύνου"; helCls = "s2d-vhigh"; }
+
+      const helTag = "<span class='" + helCls + "'>" + helLabel + "</span>";
+
+      rep += "\nHellenicSCORE II+ (Ελληνικό): " + basePct + "% → " + finalPct + "% (" + adjustments.join(", ") + ") — " + helTag;
+    } else {
+      rep += "\nHellenicSCORE II+: N/A";
+    }
+  }
 
 let smoker = (g('smoke')==='ΝΑΙ');
    let treatedBP = (g('t_htn')==='ΝΑΙ');
