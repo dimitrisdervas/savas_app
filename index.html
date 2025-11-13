@@ -243,19 +243,45 @@ hr{border:none;border-top:1px solid #2a3766;margin:26px 0}
   border: 1px solid #2a3766;
 }
 @media print {
-  #testButtons { display: none !important; }
-}
-
-@media print {
-  body { font-size:9pt !important; }
-  .grid { 
-    display:grid !important;
-    grid-template-columns:1fr 1fr !important;
-    column-gap:8px !important;
-    row-gap:4px !important;
+  /* Hide entire page by default */
+  body * {
+    visibility: hidden;
   }
-  input, select, textarea { font-size:9pt !important; padding:2px 3px !important; }
-  h1, h2 { margin-bottom:2px !important; margin-top:2px !important; }
+
+  /* Show only report and its contents */
+  #report, #report * {
+    visibility: visible;
+  }
+
+  /* Position report at top of page */
+  #report {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    padding: 20px;
+    background: white;
+    box-shadow: none;
+  }
+
+  /* Remove card styling for print */
+  .card {
+    box-shadow: none;
+    background: white;
+  }
+
+  /* Keep colored text readable and bold */
+  .s2d-low, .s2d-mid, .s2d-high, .s2d-vhigh,
+  .lpa-low, .lpa-mid, .lpa-high, .lpa-very,
+  .ascvd-low, .ascvd-border, .ascvd-mid, .ascvd-high {
+    color: #000 !important;
+    font-weight: bold !important;
+  }
+
+  /* Ensure clean page breaks */
+  #report {
+    page-break-inside: avoid;
+  }
 }
 
 </style>
@@ -1012,9 +1038,14 @@ function evalMS(){
  let bcat=document.getElementById('bmicat').value||'';
  let wcStatus = (wc==null||isNaN(wc)) ? "" : (central ? "πάνω από IDF" : "κάτω από IDF");
 
- let rep = "Ημερομηνία: "+stamp+
- "\nΑσθενής: "+name+
- "\n"+(function(){
+ let rep = "╔══════════════════════════════════════════════════════════════╗\n"
+         + "║       ΟΛΙΣΤΙΚΗ ΚΑΡΔΙΟ-ΝΕΦΡΟ-ΜΕΤΑΒΟΛΙΚΗ ΑΞΙΟΛΟΓΗΣΗ        ║\n"
+         + "╚══════════════════════════════════════════════════════════════╝\n\n"
+         + "Ιατρός: Dr Γιαλαβούζης Σάββας (Γενικός Οικογενειακός Ιατρός)\n"
+         + "Ημερομηνία: "+stamp+"\n"
+         + "Ασθενής: "+(name||'[Όνομα ασθενούς]')+"\n"
+         + "───────────────────────────────────────────────────────────────\n\n"
+         + (function(){
   var cls = (bcat==="Λιποβαρής")?"bmi-under"
            :(bcat==="Φυσιολογικό")?"bmi-normal"
            :(bcat==="Υπέρβαρος")?"bmi-over"
@@ -1241,6 +1272,12 @@ let smoker = (g('smoke')==='ΝΑΙ');
      rep += "\nΘεραπευτικός στόχος LDL-C (ESC 2023): " + tgt;
    }
  })();
+
+ // Add signature block at end
+ rep += "\n\n───────────────────────────────────────────────────────────────\n"
+      + "Υπογραφή Ιατρού: _______________________\n\n"
+      + "Dr Γιαλαβούζης Σάββας\n"
+      + "Γενικός Οικογενειακός Ιατρός\n";
 
  
  // Mark placeholder for KDIGO visual badge (already shown above table)
