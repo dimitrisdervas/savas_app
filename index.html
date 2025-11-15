@@ -4,6 +4,22 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Μεταβολικό Σύνδρομο — IDF Europe (Full)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          primary: '#1e40af',
+          secondary: '#6366f1', 
+          accent: '#059669',
+          danger: '#dc2626',
+          warning: '#d97706'
+        }
+      }
+    }
+  }
+</script>
 
 <!--
 ╔══════════════════════════════════════════════════════════════════════════════╗
@@ -286,109 +302,335 @@ hr{border:none;border-top:1px solid #2a3766;margin:26px 0}
 
 </style>
 </head>
-<body>
-<div class="card">
+<body class="bg-gradient-to-br from-slate-50 to-blue-50 min-h-screen">
+<div class="container mx-auto px-4 py-8 max-w-7xl">
 
-<h1>Γενικός Οικογενειακός Ιατρός<br>Dr Γιαλαβούζης Σάββας</h1>
-<div id="logo">MS</div>
-<h2>Ολιστικός Καρδιο-Νεφρο-Μεταβολικός Κίνδυνος<br>IDF · SCORE2 / ASCVD · CKD-EPI / KDIGO / HellenicSCORE II+</h2>
-<div style="height:1px;background:#2a3766;margin:12px auto 18px;max-width:80%"></div>
-
-<!-- Test Data Buttons -->
-<div id="testButtons">
-  <div style="text-align:center;margin-bottom:10px;font-weight:600;color:#cbd1f9;font-size:0.9rem">
-    ⚙️ Δεδομένα Δοκιμής / Test Data
+  <!-- Header -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">
+      Γενικός Οικογενειακός Ιατρός<br>
+      <span class="text-primary">Dr Γιαλαβούζης Σάββας</span>
+    </h1>
+    <div class="inline-block bg-primary text-white px-4 py-2 rounded-full text-xl font-bold mb-4">MS</div>
+    <h2 class="text-lg md:text-xl text-gray-700 leading-relaxed">
+      Ολιστικός Καρδιο-Νεφρο-Μεταβολικός Κίνδυνος<br>
+      <span class="text-sm text-gray-600">IDF · SCORE2 / ASCVD · CKD-EPI / KDIGO / HellenicSCORE II+</span>
+    </h2>
   </div>
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-    <!-- Men buttons -->
-    <div>
-      <div style="font-size:0.75rem;color:#9aa4d9;margin-bottom:6px;font-weight:600">👨 Άνδρες:</div>
-      <button type="button" onclick="fillTest('man_low')" class="test-btn">Άνδρας ~5% (Χαμηλός)</button>
-      <button type="button" onclick="fillTest('man_mod')" class="test-btn">Άνδρας ~10% (Μέτριος)</button>
-      <button type="button" onclick="fillTest('man_high')" class="test-btn">Άνδρας ~20% (Υψηλός)</button>
-      <button type="button" onclick="fillTest('man_vhigh')" class="test-btn">Άνδρας ~30% (Πολύ Υψηλός)</button>
+
+  <!-- Test Data Buttons -->
+  <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+    <div class="text-center mb-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">⚙️ Δεδομένα Δοκιμής / Test Data</h3>
     </div>
-    <!-- Women buttons -->
-    <div>
-      <div style="font-size:0.75rem;color:#9aa4d9;margin-bottom:6px;font-weight:600">👩 Γυναίκες:</div>
-      <button type="button" onclick="fillTest('woman_low')" class="test-btn">Γυναίκα ~3% (Χαμηλός)</button>
-      <button type="button" onclick="fillTest('woman_mod')" class="test-btn">Γυναίκα ~8% (Μέτριος)</button>
-      <button type="button" onclick="fillTest('woman_high')" class="test-btn">Γυναίκα ~15% (Υψηλός)</button>
-      <button type="button" onclick="fillTest('woman_vhigh')" class="test-btn">Γυναίκα ~25% (Πολύ Υψηλός)</button>
+    <div class="grid md:grid-cols-2 gap-6">
+      <!-- Men buttons -->
+      <div class="space-y-3">
+        <div class="text-sm font-medium text-gray-600 mb-3">👨 Άνδρες:</div>
+        <button type="button" onclick="fillTest('man_low')" class="w-full bg-green-100 hover:bg-green-200 text-green-800 py-2 px-4 rounded-lg transition-colors duration-200">Άνδρας ~5% (Χαμηλός)</button>
+        <button type="button" onclick="fillTest('man_mod')" class="w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-2 px-4 rounded-lg transition-colors duration-200">Άνδρας ~10% (Μέτριος)</button>
+        <button type="button" onclick="fillTest('man_high')" class="w-full bg-orange-100 hover:bg-orange-200 text-orange-800 py-2 px-4 rounded-lg transition-colors duration-200">Άνδρας ~20% (Υψηλός)</button>
+        <button type="button" onclick="fillTest('man_vhigh')" class="w-full bg-red-100 hover:bg-red-200 text-red-800 py-2 px-4 rounded-lg transition-colors duration-200">Άνδρας ~30% (Πολύ Υψηλός)</button>
+      </div>
+      <!-- Women buttons -->
+      <div class="space-y-3">
+        <div class="text-sm font-medium text-gray-600 mb-3">👩 Γυναίκες:</div>
+        <button type="button" onclick="fillTest('woman_low')" class="w-full bg-green-100 hover:bg-green-200 text-green-800 py-2 px-4 rounded-lg transition-colors duration-200">Γυναίκα ~3% (Χαμηλός)</button>
+        <button type="button" onclick="fillTest('woman_mod')" class="w-full bg-yellow-100 hover:bg-yellow-200 text-yellow-800 py-2 px-4 rounded-lg transition-colors duration-200">Γυναίκα ~8% (Μέτριος)</button>
+        <button type="button" onclick="fillTest('woman_high')" class="w-full bg-orange-100 hover:bg-orange-200 text-orange-800 py-2 px-4 rounded-lg transition-colors duration-200">Γυναίκα ~15% (Υψηλός)</button>
+        <button type="button" onclick="fillTest('woman_vhigh')" class="w-full bg-red-100 hover:bg-red-200 text-red-800 py-2 px-4 rounded-lg transition-colors duration-200">Γυναίκα ~25% (Πολύ Υψηλός)</button>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="grid">
+  <!-- Main Form Container -->
+  <div class="grid lg:grid-cols-2 gap-8">
+    
+    <!-- Left Column: Patient Demographics & SCORE2 Variables -->
+    <div class="space-y-6">
+      
+      <!-- Patient Information -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center mb-6">
+          <div class="bg-primary text-white p-2 rounded-lg mr-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Στοιχεία Ασθενούς</h3>
+        </div>
+        
+        <div class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Όνομα ασθενούς</label>
+            <input id="n" type="text" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+          </div>
+          
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Φύλο</label>
+              <select id="s" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <option value="male">Άνδρας</option>
+                <option value="female">Γυναίκα</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Ηλικία</label>
+              <input id="age" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+          </div>
+        </div>
+      </div>
 
-<div><label>Όνομα ασθενούς</label><input id="n"></div>
-<div><label>Φύλο</label><select id="s"><option value="male">Άνδρας</option><option value="female">Γυναίκα</option></select></div>
-<div><label>Ηλικία</label><input id="age" type="number"></div>
+      <!-- SCORE2 Cardiovascular Risk Factors -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center mb-6">
+          <div class="bg-red-500 text-white p-2 rounded-lg mr-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Καρδιαγγειακός Κίνδυνος (SCORE2)</h3>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Συστολική ΑΠ (mmHg)</label>
+              <input id="sbp" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">φυσιολογικό &lt;130</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Διαστολική ΑΠ (mmHg)</label>
+              <input id="dbp" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">φυσιολογικό &lt;85</p>
+            </div>
+          </div>
 
-<div><label>Περίμετρος μέσης (cm)</label><input id="wc" type="number"><div class="ref">IDF: άνδρες ≥94 — γυναίκες ≥80</div></div>
-<div><label>Τριγλυκερίδια (mg/dL)</label><input id="tg" type="number"><div class="ref">φυσιολογικό &lt;150</div></div>
-<div><label>HDL (mg/dL)</label><input id="hdl" type="number"><div class="ref">άνδρες ≥40 — γυναίκες ≥50</div></div>
-<div><label>Συνολική χοληστερόλη TC (mg/dL)</label><input id="tc" type="number"><div class="ref">για ASCVD / SCORE2</div></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">HDL (mg/dL)</label>
+              <input id="hdl" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">άνδρες ≥40 — γυναίκες ≥50</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Συνολική χοληστερόλη TC (mg/dL)</label>
+              <input id="tc" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">για ASCVD / SCORE2</p>
+            </div>
+          </div>
 
-<div><label>Γλυκόζη νηστείας (mg/dL)</label><input id="fpg" type="number"><div class="ref">φυσιολογικό &lt;100</div></div>
-<div><label>Συστολική ΑΠ (mmHg)</label><input id="sbp" type="number"><div class="ref">φυσιολογικό &lt;130</div></div>
-<div><label>Διαστολική ΑΠ (mmHg)</label><input id="dbp" type="number"><div class="ref">φυσιολογικό &lt;85</div></div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Κάπνισμα</label>
+              <select id="smoke" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <option value="ΟΧΙ">ΟΧΙ</option>
+                <option value="ΝΑΙ">ΝΑΙ</option>
+              </select>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Διαβήτης</label>
+              <select id="dm" onchange="onDMchange()" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <option value="ΟΧΙ">ΟΧΙ</option>
+                <option value="ΝΑΙ">ΝΑΙ</option>
+              </select>
+            </div>
+          </div>
 
-<div><label>Βάρος (kg)</label><input id="w" type="number" oninput="autoBMI()"></div>
-<div><label>Ύψος (cm)</label><input id="h" type="number" oninput="autoBMI()"></div>
-<div><label>BMI (kg/m²)</label><input id="bmi" readonly></div>
-<div><label>BMI κατηγορία</label><input id="bmicat" readonly></div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Lp(a)</label>
+            <div class="flex gap-2">
+              <input id="lpa" type="number" step="0.1" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent" placeholder="τιμή">
+              <select id="lpa_unit" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <option value="mgdl" selected>mg/dL</option>
+                <option value="nmol">nmol/L</option>
+              </select>
+            </div>
+            <p class="text-xs text-gray-500 mt-1">Κατηγοριοποίηση: &lt;30 χαμηλός · 30–50 μέτριος · &gt;50 αυξημένος · &gt;100 πολύ υψηλός</p>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<!-- Lp(a) -->
-<div>
-  <label>Lp(a)</label>
-  <div style="display:flex;gap:8px;align-items:center">
-    <input id="lpa" type="number" step="0.1" style="flex:1" inputmode="decimal" placeholder="τιμή">
-    <select id="lpa_unit" style="max-width:110px">
-      <option value="mgdl" selected>mg/dL</option>
-      <option value="nmol">nmol/L</option>
-    </select>
+    <!-- Right Column: Kidney Function & Metabolic Variables -->
+    <div class="space-y-6">
+      
+      <!-- Kidney Function -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center mb-6">
+          <div class="bg-blue-500 text-white p-2 rounded-lg mr-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Νεφρική Λειτουργία (CKD-EPI / KDIGO)</h3>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Κρεατινίνη ορού (mg/dL)</label>
+              <input id="scr" type="number" step="0.01" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">eGFR CKD‑EPI 2021 (mL/min/1.73m²)</label>
+              <input id="egfr_auto" type="number" step="1" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Λευκωματίνη ούρων (mg/L)</label>
+              <input id="ualb" type="number" step="0.1" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Κρεατινίνη ούρων</label>
+              <div class="flex gap-2">
+                <input id="ucr" type="number" step="0.1" class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                <select id="ucr_unit" class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                  <option value="mgdl" selected>mg/dL</option>
+                  <option value="mmol">mmol/L</option>
+                </select>
+              </div>
+              <p class="text-xs text-gray-500 mt-1">Αυτόματη μετατροπή (1 mmol Cr ≈ 113.12 mg)</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">ACR (mg/g)</label>
+            <input id="acr" type="number" step="1" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+          </div>
+        </div>
+      </div>
+
+      <!-- Metabolic Factors -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center mb-6">
+          <div class="bg-green-500 text-white p-2 rounded-lg mr-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Μεταβολικοί Παράγοντες (IDF)</h3>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Περίμετρος μέσης (cm)</label>
+              <input id="wc" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">IDF: άνδρες ≥94 — γυναίκες ≥80</p>
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Γλυκόζη νηστείας (mg/dL)</label>
+              <input id="fpg" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <p class="text-xs text-gray-500 mt-1">φυσιολογικό &lt;100</p>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Τριγλυκερίδια (mg/dL)</label>
+            <input id="tg" type="number" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            <p class="text-xs text-gray-500 mt-1">φυσιολογικό &lt;150</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Body Measurements -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center mb-6">
+          <div class="bg-purple-500 text-white p-2 rounded-lg mr-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Σωματομετρήσεις</h3>
+        </div>
+        
+        <div class="space-y-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Βάρος (kg)</label>
+              <input id="w" type="number" oninput="autoBMI()" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">Ύψος (cm)</label>
+              <input id="h" type="number" oninput="autoBMI()" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">BMI (kg/m²)</label>
+              <input id="bmi" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+            </div>
+            <div>
+              <label class="block text-sm font-medium text-gray-700 mb-2">BMI κατηγορία</label>
+              <input id="bmicat" readonly class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-50">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Treatment Information -->
+      <div class="bg-white rounded-xl shadow-lg p-6">
+        <div class="flex items-center mb-6">
+          <div class="bg-indigo-500 text-white p-2 rounded-lg mr-3">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 7.172V5L8 4z"></path>
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Φαρμακευτική Αγωγή</h3>
+        </div>
+        
+        <div class="grid grid-cols-3 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Αγωγή σακχάρου</label>
+            <select id="t_sug" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="">Καμία</option>
+              <option value="ΝΑΙ">ΝΑΙ</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Αγωγή υπέρτασης</label>
+            <select id="t_htn" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="">Καμία</option>
+              <option value="ΝΑΙ">ΝΑΙ</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">Αγωγή υπερλιπιδαιμίας</label>
+            <select id="t_lip" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+              <option value="">Καμία</option>
+              <option value="ΝΑΙ">ΝΑΙ</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="ref">Κατηγοριοποίηση: &lt;30 χαμηλός · 30–50 μέτριος · &gt;50 αυξημένος · &gt;100 πολύ υψηλός</div>
-</div>
 
-<!-- Kidney: Serum Cr & eGFR 2021 + Urine ACR -->
-<div><label>Κρεατινίνη ορού (mg/dL)</label><input id="scr" type="number" step="0.01"></div>
-<div><label>eGFR CKD‑EPI 2021 (mL/min/1.73m²)</label><input id="egfr_auto" type="number" step="1" readonly></div>
-
-<div><label>Λευκωματίνη ούρων (mg/L)</label><input id="ualb" type="number" step="0.1"></div>
-<div>
-  <label>Κρεατινίνη ούρων</label>
-  <div style="display:flex;gap:8px;align-items:center">
-    <input id="ucr" type="number" step="0.1" style="flex:1">
-    <select id="ucr_unit" style="max-width:110px">
-      <option value="mgdl" selected>mg/dL</option>
-      <option value="mmol">mmol/L</option>
-    </select>
+  <!-- Hidden Diabetes Fields -->
+  <div style="display:none">
+    <input id="hbA1c" type="number" step="0.1">
+    <input id="egfr" type="number" step="1">
+    <input id="age_dm_dx" type="number" min="1">
   </div>
-  <div class="ref">Αν επιλέξεις mmol/L, γίνεται αυτόματη μετατροπή (1 mmol Cr ≈ 113.12 mg, ACR mg/g = (Alb mg/L / Cr mmol/L) × 8.84)</div>
-</div>
-<div><label>ACR (mg/g)</label><input id="acr" type="number" step="1" readonly></div>
 
-<div><label>Διαβήτης</label>
-  <select id="dm" onchange="onDMchange()">
-    <option value="ΟΧΙ">ΟΧΙ</option><option value="ΝΑΙ">ΝΑΙ</option>
-  </select>
-</div>
-<div style="display:none"><label>HbA1c (%)</label><input id="hbA1c" type="number" step="0.1"></div>
-<div style="display:none"><label>eGFR (mL/min/1.73m²) — για SCORE2-DM</label><input id="egfr" type="number" step="1"></div>
-<div style="display:none"><label>Ηλικία διάγνωσης ΣΔ</label><input id="age_dm_dx" type="number" min="1"></div>
-<div><label>Κάπνισμα</label><select id="smoke"><option value="ΟΧΙ">ΟΧΙ</option><option value="ΝΑΙ">ΝΑΙ</option></select></div>
-<div><label>Αγωγή σακχάρου</label><select id="t_sug"><option value="">Καμία</option><option value="ΝΑΙ">ΝΑΙ</option></select></div>
-<div><label>Αγωγή υπέρτασης</label><select id="t_htn"><option value="">Καμία</option><option value="ΝΑΙ">ΝΑΙ</option></select></div>
-<div><label>Αγωγή υπερλιπιδαιμίας</label><select id="t_lip"><option value="">Καμία</option><option value="ΝΑΙ">ΝΑΙ</option></select></div><div style="page-break-after:always"></div>
-
-</div><!-- end .grid -->
-
-<!-- KDIGO MATRIX (full) -->
-<!-- legend clarifications -->
-<div class="kdigo-wrap">
-<p class="kd-title">Κατηγοριοποίηση κατά KDIGO (GFR × ACR)</p>
+  <!-- KDIGO Matrix -->
+  <div class="bg-white rounded-xl shadow-lg p-6 mt-8">
+    <div class="flex items-center mb-6">
+      <div class="bg-amber-500 text-white p-2 rounded-lg mr-3">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+        </svg>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-900">Κατηγοριοποίηση κατά KDIGO (GFR × ACR)</h3>
+    </div>
+    
+    <div class="overflow-x-auto">
+      <div class="kdigo-wrap">
+        <p class="kd-title hidden">Κατηγοριοποίηση κατά KDIGO (GFR × ACR)</p>
     <table class="kd-table" id="kdigoMatrix" aria-label="KDIGO risk grid">
       <tr>
         <th class="kd-firstcol"> </th>
@@ -434,31 +676,56 @@ hr{border:none;border-top:1px solid #2a3766;margin:26px 0}
       </tr>
     </table>
 
-<div style='color:#cbd1f9;font-size:0.85rem;margin-top:12px'>
-<b>ΧΡΩΜΑΤΑ:</b>
-&nbsp;<span style='background:#0CCE6B;color:#000;padding:3px 6px;border-radius:6px'>Χαμηλός</span>
-&nbsp;<span style='background:#FDE74C;color:#000;padding:3px 6px;border-radius:6px'>Μέτριος</span>
-&nbsp;<span style='background:#FD6A02;color:#fff;padding:3px 6px;border-radius:6px'>Υψηλός</span>
-&nbsp;<span style='background:#D7263D;color:#fff;padding:3px 6px;border-radius:6px'>Πολύ Υψηλός</span>
-</div>
-
-<p class="ref">Σημείωση: το ✓ εμφανίζεται αυτόματα στο σωστό κελί με βάση τα πεδία eGFR & ACR.</p>
-
-    
-
-    
+      <div class="mt-6">
+        <div class="flex flex-wrap justify-center gap-2 text-sm">
+          <span class="font-semibold text-gray-700">ΧΡΩΜΑΤΑ:</span>
+          <span class="bg-green-200 text-green-900 px-3 py-1 rounded-full">Χαμηλός</span>
+          <span class="bg-yellow-200 text-yellow-900 px-3 py-1 rounded-full">Μέτριος</span>
+          <span class="bg-orange-200 text-orange-900 px-3 py-1 rounded-full">Υψηλός</span>
+          <span class="bg-red-200 text-red-900 px-3 py-1 rounded-full">Πολύ Υψηλός</span>
+        </div>
+        <p class="text-xs text-gray-500 mt-3 text-center">Σημείωση: το ✓ εμφανίζεται αυτόματα στο σωστό κελί με βάση τα πεδία eGFR & ACR.</p>
+      </div>
+      </div>
+    </div>
   </div>
 
-<!-- Buttons -->
-<div style="text-align:center">
-  <button id="calcBtn" onclick="evalMS()">Υπολογισμός</button>
-  <button id="printBtn" onclick="window.print()">Εκτύπωση</button>
-  <button id="clearBtn" onclick="clearAll()">Καθαρισμός</button>
-  <button id="clearStackBtn" onclick="clearStack()">Καθαρισμός όλων των reports</button>
-</div>
+  <!-- Calculate Button -->
+  <div class="text-center mt-8 mb-8">
+    <button id="calcBtn" onclick="evalMS()" class="bg-primary hover:bg-blue-700 text-white font-bold py-4 px-8 rounded-xl text-lg shadow-lg transform transition-all duration-200 hover:scale-105 focus:ring-4 focus:ring-blue-300">
+      <svg class="w-6 h-6 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+      </svg>
+      Υπολογισμός
+    </button>
+  </div>
+  <!-- Action Buttons -->
+  <div class="flex justify-center gap-4 mt-6 mb-8">
+    <button id="printBtn" onclick="window.print()" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-105">
+      <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+      </svg>
+      Εκτύπωση
+    </button>
+    <button id="clearBtn" onclick="clearAll()" class="bg-warning hover:bg-yellow-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-105">
+      <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+      </svg>
+      Καθαρισμός
+    </button>
+    <button id="clearStackBtn" onclick="clearStack()" class="bg-danger hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg shadow-md transition-all duration-200 hover:scale-105">
+      <svg class="w-5 h-5 inline-block mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+      Καθαρισμός όλων των reports
+    </button>
+  </div>
 
-<div id="out"></div>
-<div id="report"></div>
+  <!-- Results Section -->
+  <div id="out" class="mt-8"></div>
+  <div id="report" class="mt-8"></div>
+  
+</div> <!-- Close main container -->
 
 <hr>
 
