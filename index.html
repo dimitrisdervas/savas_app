@@ -106,601 +106,464 @@ Single-file architecture for:
 -->
 
   <style>
-    /* ASCVD labels */
-    .ascvd-low {
-      color: #10b981;
-      font-weight: 700
-    }
+    /* ═══════════════════════════════════════════════════════════════════════════
+       MODERN, USER-FRIENDLY DESIGN SYSTEM
+       Inspired by best practices in UX/UI design
+       Soft color palette, clear hierarchy, excellent readability
+       ═══════════════════════════════════════════════════════════════════════════ */
 
-    .ascvd-border {
-      color: #eab308;
-      font-weight: 700
-    }
+    /* Import Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
-    .ascvd-mid {
-      color: #f97316;
-      font-weight: 700
-    }
-
-    .ascvd-high {
-      color: #ef4444;
-      font-weight: 700
-    }
-
-    /* Base UI */
+    /* Base Layout */
     body {
-      font-family: system-ui, Segoe UI, Roboto, Arial;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
       margin: 0;
-      background: #0b1020;
-      color: #e7ebff
+      padding: 20px;
+      background: linear-gradient(135deg, #e0f5ee 0%, #d4ede3 50%, #c8e8da 100%);
+      min-height: 100vh;
+      color: #2d3748;
     }
 
     .card {
-      max-width: 980px;
-      margin: 24px auto;
-      padding: 24px;
-      background: #111833;
-      border-radius: 16px;
-      box-shadow: 0 6px 24px rgba(0, 0, 0, .35)
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 40px;
+      background: #ffffff;
+      border-radius: 24px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
     }
 
-    h1,
+    /* Header */
+    h1 {
+      text-align: center;
+      margin: 0 0 8px 0;
+      color: #1a202c;
+      font-size: 1.8rem;
+      font-weight: 700;
+    }
+
     h2 {
       text-align: center;
-      margin: 4px 0;
-      color: white
-    }
-
-    h2 {
-      font-size: 1.15rem;
-      font-weight: 650
-    }
-
-    h1 {
-      margin-top: 2px
-    }
-
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 20px;
-      margin-top: 18px
-    }
-
-    label {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #cbd1f9;
-      margin-bottom: 3px;
-      display: block
-    }
-
-    .ref {
-      font-size: 0.75rem;
-      color: #9aa4d9;
-      margin-top: 2px
-    }
-
-    input,
-    select {
-      width: 100%;
-      padding: 6px;
-      border-radius: 8px;
-      border: 1px solid #223070;
-      background: #0f1533;
+      margin: 0 0 24px 0;
+      color: #4a5568;
       font-size: 0.95rem;
-      color: #ffffff;
-      outline: none
-    }
-
-    button {
-      margin-top: 18px;
-      padding: 12px 16px;
-      border-radius: 10px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer
-    }
-
-    #calcBtn {
-      background: #32d583;
-      color: inherit
-    }
-
-    #printBtn {
-      background: #3DD6A0;
-      color: inherit;
-      margin-left: 10px
-    }
-
-    #clearBtn {
-      background: #c0392b;
-      color: inherit;
-      margin-left: 10px
-    }
-
-    #clearStackBtn {
-      background: #8e44ad;
-      color: inherit;
-      margin-left: 10px
-    }
-
-    #out {
-      margin-top: 20px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      text-align: center
-    }
-
-    #report {
-      margin-top: 25px;
-      padding: 14px;
-      border: 1px solid #4f72ff;
-      border-radius: 10px;
-      background: #0f183b;
-      white-space: pre-line;
-      display: none;
-      font-size: 0.88rem
+      font-weight: 500;
+      line-height: 1.6;
     }
 
     #logo {
-      width: 64px;
-      height: 64px;
-      border-radius: 14px;
-      background: #3DD6A0;
+      width: 72px;
+      height: 72px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
       color: #ffffff;
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 1.3rem;
-      margin: 14px auto
+      font-size: 1.5rem;
+      margin: 0 auto 20px;
+      box-shadow: 0 8px 20px rgba(72, 187, 120, 0.25);
     }
 
     hr {
       border: none;
-      border-top: 1px solid #2a3766;
-      margin: 26px 0
+      border-top: 2px solid #e2e8f0;
+      margin: 32px 0;
     }
 
-    @media print {
-      div[style*="text-align:center"] {
-        display: none !important
-      }
+    /* Field Groups - Card Style */
+    .field-group {
+      background: #f7fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 24px;
     }
 
-    .tick {
-      color: #3DD6A0;
-      font-weight: 800
+    .field-group-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #2d3748;
+      margin: 0 0 20px 0;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #48bb78;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
 
-    .cross {
-      color: #7c8299;
-      font-weight: 800
+    /* Form Grid */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-top: 0;
     }
 
-    @media print {
-
-      .tick,
-      .cross {
-        color: black
-      }
+    /* Labels */
+    label {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 6px;
+      display: block;
     }
 
-    /* BMI colors */
-    .bmi-under {
-      color: #6b7280 !important
+    .ref {
+      font-size: 0.75rem;
+      color: #718096;
+      margin-top: 4px;
+      font-weight: 400;
     }
 
+    /* Inputs */
+    input,
+    select {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      font-size: 0.95rem;
+      color: #2d3748;
+      outline: none;
+      transition: all 0.2s;
+      font-family: inherit;
+      box-sizing: border-box;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #48bb78;
+      box-shadow: 0 0 0 3px rgba(72, 187, 120, 0.1);
+    }
+
+    input[readonly] {
+      background: #edf2f7;
+      color: #4a5568;
+      cursor: not-allowed;
+    }
+
+    input.valid {
+      border-color: #48bb78;
+      background: #f0fff4;
+    }
+
+    input.invalid {
+      border-color: #f56565;
+      background: #fff5f5;
+    }
+
+    /* Validation Indicators */
+    .field-wrapper {
+      position: relative;
+    }
+
+    .validation-icon {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+      pointer-events: none;
+    }
+
+    .validation-icon.valid {
+      color: #48bb78;
+    }
+
+    .validation-icon.invalid {
+      color: #f56565;
+    }
+
+    /* Buttons */
+    button {
+      margin-top: 0;
+      padding: 14px 24px;
+      border-radius: 12px;
+      border: none;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      font-family: inherit;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #calcBtn {
+      background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+      color: white;
+    }
+
+    #printBtn {
+      background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
+      color: white;
+      margin-left: 10px;
+    }
+
+    #clearBtn {
+      background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
+      color: white;
+      margin-left: 10px;
+    }
+
+    #clearStackBtn {
+      background: linear-gradient(135deg, #b794f4 0%, #9f7aea 100%);
+      color: white;
+      margin-left: 10px;
+    }
+
+    /* Output */
+    #out {
+      margin-top: 24px;
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-align: center;
+      color: #2d3748;
+    }
+
+    #report {
+      margin-top: 32px;
+      padding: 24px;
+      border: 2px solid #48bb78;
+      border-radius: 16px;
+      background: #f7fafc;
+      white-space: pre-line;
+      display: none;
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: #2d3748;
+    }
+
+    /* Risk Category Colors - Updated for Light Theme */
+    .ascvd-low,
+    .s2d-low,
+    .lpa-low,
+    .acr-a1,
+    .gfr-g1,
     .bmi-normal {
-      color: #10b981 !important
+      color: #2f855a !important;
+      font-weight: 700;
     }
 
+    .ascvd-border,
+    .s2d-mid,
+    .lpa-mid,
+    .gfr-g2,
     .bmi-over {
-      color: #f59e0b !important
+      color: #d69e2e !important;
+      font-weight: 700;
     }
 
-    .bmi-obese {
-      color: #ef4444 !important
-    }
-
-    /* SCORE2-Diabetes categories */
-    .s2d-low {
-      color: #10b981;
-      font-weight: 700
-    }
-
-    .s2d-mid {
-      color: #f59e0b;
-      font-weight: 700
-    }
-
-    .s2d-high {
-      color: #ef4444;
-      font-weight: 700
-    }
-
-    .s2d-vhigh {
-      color: #b91c1c;
-      font-weight: 800
-    }
-
-    @media print {
-
-      .s2d-low,
-      .s2d-mid,
-      .s2d-high,
-      .s2d-vhigh {
-        color: black !important
-      }
-    }
-
-    /* Lp(a) categories */
-    .lpa-low {
-      color: #10b981;
-      font-weight: 700
-    }
-
-    .lpa-mid {
-      color: #eab308;
-      font-weight: 700
-    }
-
-    .lpa-high {
-      color: #f97316;
-      font-weight: 700
-    }
-
-    .lpa-very {
-      color: #ef4444;
-      font-weight: 700
-    }
-
-    @media print {
-
-      .lpa-low,
-      .lpa-mid,
-      .lpa-high,
-      .lpa-very {
-        color: black !important
-      }
-    }
-
-    /* ACR categories */
-    .acr-a1 {
-      color: #10b981;
-      font-weight: 700
-    }
-
-    /* <30 mg/g */
-    .acr-a2 {
-      color: #f59e0b;
-      font-weight: 700
-    }
-
-    /* 30–300 mg/g */
-    .acr-a3 {
-      color: #ef4444;
-      font-weight: 700
-    }
-
-    /* >300 mg/g */
-    @media print {
-
-      .acr-a1,
-      .acr-a2,
-      .acr-a3 {
-        color: black !important
-      }
-    }
-
-    /* eGFR stages */
-    .gfr-g1 {
-      color: #10b981;
-      font-weight: 700
-    }
-
-    .gfr-g2 {
-      color: #eab308;
-      font-weight: 700
-    }
-
+    .ascvd-mid,
+    .s2d-high,
+    .lpa-high,
+    .acr-a2,
     .gfr-g3 {
-      color: #f97316;
-      font-weight: 700
+      color: #dd6b20 !important;
+      font-weight: 700;
     }
 
-    .gfr-g4 {
-      color: #ef4444;
-      font-weight: 700
+    .ascvd-high,
+    .s2d-vhigh,
+    .lpa-very,
+    .acr-a3,
+    .gfr-g4,
+    .bmi-obese {
+      color: #c53030 !important;
+      font-weight: 800;
     }
 
     .gfr-g5 {
-      color: #b91c1c;
-      font-weight: 800
+      color: #742a2a !important;
+      font-weight: 800;
     }
 
-    @media print {
-
-      .gfr-g1,
-      .gfr-g2,
-      .gfr-g3,
-      .gfr-g4,
-      .gfr-g5 {
-        color: black !important
-      }
+    .bmi-under {
+      color: #718096 !important;
     }
 
-    /* KDIGO 6x3 Matrix (full) */
+    .tick {
+      color: #38a169;
+      font-weight: 800;
+    }
+
+    .cross {
+      color: #a0aec0;
+      font-weight: 800;
+    }
+
+    /* KDIGO Matrix */
     .kdigo-wrap {
       display: none;
-      margin-top: 18px
+      margin-top: 32px;
+      background: #f7fafc;
+      padding: 24px;
+      border-radius: 16px;
     }
 
     .kdigo {
       border-collapse: separate;
-      border-spacing: 6px;
-      margin: 0 auto
+      border-spacing: 8px;
+      margin: 0 auto;
     }
 
     .kdigo th,
     .kdigo td {
-      min-width: 90px;
-      height: 52px;
+      min-width: 100px;
+      height: 60px;
       text-align: center;
       vertical-align: middle;
-      border-radius: 8px;
-      padding: 6px 8px;
-      font-weight: 700
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-weight: 700;
     }
 
-    .kd-hdr {
-      background: #0f1533;
-      color: #cbd1f9;
-      border: 1px solid #223070;
-      font-weight: 800
-    }
-
+    .kd-hdr,
     .kd-Glab {
-      background: #0f1533;
-      color: #cbd1f9;
-      border: 1px solid #223070;
-      font-weight: 800
+      background: #ffffff;
+      color: #2d3748;
+      border: 2px solid #e2e8f0;
+      font-weight: 800;
     }
 
-    .kd-A1 {
-      background: #0b3;
-      background: #0d6d3a;
-      color: #fff
-    }
-
-    /* green */
-    .kd-A2 {
-      background: #b38600;
-      background: #9b7d1f;
-      color: #fff
-    }
-
-    /* yellow/amber */
-    .kd-A3 {
-      background: #b01f1f;
-      color: #fff
-    }
-
-    /* red */
-    .kd-A2-hi {
-      background: #cc6e00;
-      color: #fff
-    }
-
-    /* orange */
-    .kd-very {
-      background: #6d0d0d;
-      color: #fff
-    }
-
-    /* very high dark red */
-    .kd-mark {
-      font-size: 24px;
-      font-weight: 900;
-      color: black;
-    }
-
-    .kd-table td .kd-mark {
-      display: block;
-      width: 100%;
-      text-align: center;
-    }
-
-    /* ensure print keeps colors */
-    @media print {
-
-      .kd-A1,
-      .kd-A2,
-      .kd-A3,
-      .kd-A2-hi,
-      .kd-very {
-        -webkit-print-color-adjust: exact;
-        print-color-adjust: exact;
-      }
-
-      .kd-mark {
-        color: black !important
-      }
-    }
-
-    /* === PRINT FIX: don't split cards === */
-    @media print {
-      .card {
-        page-break-inside: avoid !important;
-        break-inside: avoid !important;
-      }
-    }
-
-    /* === PRINT PAGES: one report per page in the stack === */
-    @media print {
-      #printStack>.printPage {
-        page-break-after: always;
-        break-after: page;
-      }
-    }
-
-
-
-
-    /* KDIGO color cells nicer palette + larger font */
+    .kd-A1,
     .kd-green {
-      background: #0CCE6B;
-      color: #000
+      background: #48bb78;
+      color: #ffffff;
     }
 
+    .kd-A2,
     .kd-yellow {
-      background: #FDE74C;
-      color: #000
+      background: #ecc94b;
+      color: #2d3748;
     }
 
+    .kd-A3,
+    .kd-A2-hi,
     .kd-orange {
-      background: #FD6A02;
-      color: #fff
+      background: #ed8936;
+      color: #ffffff;
     }
 
+    .kd-very,
     .kd-red {
-      background: #D7263D;
-      color: #fff
+      background: #f56565;
+      color: #ffffff;
+    }
+
+    .kd-mark {
+      font-size: 28px;
+      font-weight: 900;
+      color: #2d3748;
     }
 
     .kd-table td,
     .kd-table th {
-      font-size: 0.95rem
+      font-size: 0.95rem;
     }
 
-    /* Test data buttons */
+    /* Button Group Selections (replacing dropdowns) */
+    .button-group {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .button-group-btn {
+      padding: 10px 18px;
+      border-radius: 24px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      color: #2d3748;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: inherit;
+      white-space: nowrap;
+    }
+
+    .button-group-btn:hover {
+      border-color: #cbd5e0;
+      background: #f7fafc;
+    }
+
+    .button-group-btn.selected {
+      border-color: #ed8936;
+      background: #fffaf0;
+      color: #2d3748;
+    }
+
+    .button-group-btn .emoji {
+      font-size: 1.1em;
+    }
+
+    /* Hidden select inputs (for form compatibility) */
+    .hidden-select {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* Test Data Buttons */
     .test-btn {
       width: 100%;
-      padding: 6px 8px;
-      margin: 3px 0;
-      border-radius: 6px;
-      border: 1px solid #3a4d7a;
-      background: #0f1533;
-      color: #cbd1f9;
-      font-size: 0.8rem;
+      padding: 10px 14px;
+      margin: 4px 0;
+      border-radius: 10px;
+      border: 2px solid #e2e8f0;
+      background: #ffffff;
+      color: #2d3748;
+      font-size: 0.85rem;
       cursor: pointer;
       transition: all 0.2s;
       font-weight: 500;
     }
 
     .test-btn:hover {
-      background: #1a2550;
-      border-color: #4f72ff;
-      color: #fff;
+      background: #48bb78;
+      border-color: #48bb78;
+      color: #ffffff;
       transform: translateY(-1px);
     }
 
     #testButtons {
-      margin: 16px 0;
-      padding: 12px;
-      background: #1a2342;
-      border-radius: 10px;
-      border: 1px solid #2a3766;
-    }
-
-    @media print {
-
-      /* Hide entire page by default */
-      body * {
-        visibility: hidden;
-      }
-
-      /* Show only report and its contents */
-      #report,
-      #report * {
-        visibility: visible;
-      }
-
-      /* Position report at top of page */
-      #report {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        padding: 20px;
-        background: white;
-        box-shadow: none;
-      }
-
-      /* Remove card styling for print */
-      .card {
-        box-shadow: none;
-        background: white;
-      }
-
-      /* Keep colored text readable and bold */
-      .s2d-low,
-      .s2d-mid,
-      .s2d-high,
-      .s2d-vhigh,
-      .lpa-low,
-      .lpa-mid,
-      .lpa-high,
-      .lpa-very,
-      .ascvd-low,
-      .ascvd-border,
-      .ascvd-mid,
-      .ascvd-high {
-        color: #000 !important;
-        font-weight: bold !important;
-      }
-
-      /* Ensure clean page breaks */
-      #report {
-        page-break-inside: avoid;
-      }
-    }
-
-    /* ═══════════════════════════════════════════════════════════════════════════
-   ENHANCED REPORT SYSTEM - Progress Tracking, Impact Analysis, PDF Export
-   ═══════════════════════════════════════════════════════════════════════════ */
-
-    /* Progress Indicators */
-    .progress-improved {
-      color: #10b981 !important;
-      font-weight: 700;
-    }
-
-    .progress-same {
-      color: #6b7280 !important;
-      font-weight: 600;
-    }
-
-    .progress-worse {
-      color: #ef4444 !important;
-      font-weight: 700;
-    }
-
-    .progress-arrow {
-      font-size: 1.1em;
-      margin: 0 4px;
-    }
-
-    .progress-value {
-      font-size: 0.85em;
-      color: #9aa4d9;
+      margin: 0 0 32px 0;
+      padding: 20px;
+      background: #f7fafc;
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
     }
 
     /* Impact Analysis Section */
     .impact-section {
-      margin-top: 20px;
-      padding: 16px;
-      background: linear-gradient(135deg, #1a2342 0%, #0f183b 100%);
-      border-radius: 12px;
-      border: 1px solid #3a4d7a;
+      margin-top: 32px;
+      padding: 24px;
+      background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+      border-radius: 16px;
+      border: 2px solid #e2e8f0;
     }
 
     .impact-title {
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       font-weight: 700;
-      color: #3DD6A0;
-      margin-bottom: 12px;
+      color: #2d3748;
+      margin-bottom: 16px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -710,79 +573,80 @@ Single-file architecture for:
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 12px;
-      margin: 6px 0;
-      background: #0f1533;
-      border-radius: 8px;
+      padding: 14px 16px;
+      margin: 8px 0;
+      background: #ffffff;
+      border-radius: 12px;
       border-left: 4px solid;
-      transition: transform 0.2s;
+      transition: all 0.2s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
     }
 
     .impact-item:hover {
       transform: translateX(4px);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
 
     .impact-item.priority-1 {
-      border-color: #ef4444;
+      border-color: #f56565;
     }
 
     .impact-item.priority-2 {
-      border-color: #f59e0b;
+      border-color: #ed8936;
     }
 
     .impact-item.priority-3 {
-      border-color: #3b82f6;
+      border-color: #4299e1;
     }
 
     .impact-item.priority-4 {
-      border-color: #6b7280;
+      border-color: #a0aec0;
     }
 
     .impact-action {
       font-weight: 600;
-      color: #e7ebff;
+      color: #2d3748;
     }
 
     .impact-reduction {
       font-weight: 700;
-      padding: 4px 10px;
+      padding: 6px 12px;
       border-radius: 20px;
       font-size: 0.85rem;
     }
 
     .impact-reduction.high {
-      background: #dc262620;
-      color: #f87171;
+      background: #fed7d7;
+      color: #c53030;
     }
 
     .impact-reduction.medium {
-      background: #f59e0b20;
-      color: #fbbf24;
+      background: #feebc8;
+      color: #c05621;
     }
 
     .impact-reduction.low {
-      background: #3b82f620;
-      color: #60a5fa;
+      background: #bee3f8;
+      color: #2c5282;
     }
 
     .impact-stars {
-      color: #fbbf24;
+      color: #d69e2e;
       letter-spacing: 2px;
     }
 
-    /* Multi-select impact items */
     .impact-item.selected {
-      border-color: #10b981 !important;
-      background: linear-gradient(135deg, #0f1533 0%, #10b98115 100%);
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.3);
+      border-color: #48bb78 !important;
+      background: #f0fff4;
+      box-shadow: 0 0 12px rgba(72, 187, 120, 0.3);
     }
 
     .impact-checkbox {
-      width: 20px;
-      height: 20px;
-      border-radius: 4px;
-      border: 2px solid #3a4d7a;
-      background: #0f1533;
+      width: 22px;
+      height: 22px;
+      border-radius: 6px;
+      border: 2px solid #cbd5e0;
+      background: #ffffff;
       cursor: pointer;
       display: flex;
       align-items: center;
@@ -792,12 +656,12 @@ Single-file architecture for:
     }
 
     .impact-checkbox:hover {
-      border-color: #10b981;
+      border-color: #48bb78;
     }
 
     .impact-item.selected .impact-checkbox {
-      background: #10b981;
-      border-color: #10b981;
+      background: #48bb78;
+      border-color: #48bb78;
     }
 
     .impact-checkbox::after {
@@ -1146,10 +1010,23 @@ Single-file architecture for:
     <div class="grid">
 
       <div><label>Όνομα ασθενούς</label><input id="n"></div>
-      <div><label>Φύλο</label><select id="s">
+
+      <div>
+        <label>Φύλο</label>
+        <div class="button-group">
+          <button type="button" class="button-group-btn selected" onclick="selectGender('male', this)">
+            <span class="emoji">👨</span> Άνδρας
+          </button>
+          <button type="button" class="button-group-btn" onclick="selectGender('female', this)">
+            <span class="emoji">👩</span> Γυναίκα
+          </button>
+        </div>
+        <select id="s" class="hidden-select">
           <option value="male">Άνδρας</option>
           <option value="female">Γυναίκα</option>
-        </select></div>
+        </select>
+      </div>
+
       <div><label>Ηλικία</label><input id="age" type="number"></div>
 
       <div><label>Περίμετρος μέσης (cm)</label><input id="wc" type="number">
@@ -1212,8 +1089,17 @@ Single-file architecture for:
       </div>
       <div><label>ACR (mg/g)</label><input id="acr" type="number" step="1" readonly></div>
 
-      <div><label>Διαβήτης</label>
-        <select id="dm" onchange="onDMchange()">
+      <div>
+        <label>Διαβήτης</label>
+        <div class="button-group">
+          <button type="button" class="button-group-btn selected" onclick="selectDiabetes('ΟΧΙ', this)">
+            <span class="emoji">✅</span> ΟΧΙ
+          </button>
+          <button type="button" class="button-group-btn" onclick="selectDiabetes('ΝΑΙ', this)">
+            <span class="emoji">⚠️</span> ΝΑΙ
+          </button>
+        </div>
+        <select id="dm" class="hidden-select" onchange="onDMchange()">
           <option value="ΟΧΙ">ΟΧΙ</option>
           <option value="ΝΑΙ">ΝΑΙ</option>
         </select>
@@ -1222,22 +1108,66 @@ Single-file architecture for:
       <div style="display:none"><label>eGFR (mL/min/1.73m²) — για SCORE2-DM</label><input id="egfr" type="number"
           step="1"></div>
       <div style="display:none"><label>Ηλικία διάγνωσης ΣΔ</label><input id="age_dm_dx" type="number" min="1"></div>
-      <div><label>Κάπνισμα</label><select id="smoke">
+      <div>
+        <label>Κάπνισμα</label>
+        <div class="button-group">
+          <button type="button" class="button-group-btn selected" onclick="selectSmoke('ΟΧΙ', this)">
+            <span class="emoji">🚭</span> ΟΧΙ
+          </button>
+          <button type="button" class="button-group-btn" onclick="selectSmoke('ΝΑΙ', this)">
+            <span class="emoji">🚬</span> ΝΑΙ
+          </button>
+        </div>
+        <select id="smoke" class="hidden-select">
           <option value="ΟΧΙ">ΟΧΙ</option>
           <option value="ΝΑΙ">ΝΑΙ</option>
-        </select></div>
-      <div><label>Αγωγή σακχάρου</label><select id="t_sug">
+        </select>
+      </div>
+      <div>
+        <label>Αγωγή σακχάρου</label>
+        <div class="button-group">
+          <button type="button" class="button-group-btn selected" onclick="selectMedSugar('', this)">
+            <span class="emoji">⭕</span> Καμία
+          </button>
+          <button type="button" class="button-group-btn" onclick="selectMedSugar('ΝΑΙ', this)">
+            <span class="emoji">💊</span> ΝΑΙ
+          </button>
+        </div>
+        <select id="t_sug" class="hidden-select">
           <option value="">Καμία</option>
           <option value="ΝΑΙ">ΝΑΙ</option>
-        </select></div>
-      <div><label>Αγωγή υπέρτασης</label><select id="t_htn">
+        </select>
+      </div>
+      <div>
+        <label>Αγωγή υπέρτασης</label>
+        <div class="button-group">
+          <button type="button" class="button-group-btn selected" onclick="selectMedHtn('', this)">
+            <span class="emoji">⭕</span> Καμία
+          </button>
+          <button type="button" class="button-group-btn" onclick="selectMedHtn('ΝΑΙ', this)">
+            <span class="emoji">💊</span> ΝΑΙ
+          </button>
+        </div>
+        <select id="t_htn" class="hidden-select">
           <option value="">Καμία</option>
           <option value="ΝΑΙ">ΝΑΙ</option>
-        </select></div>
-      <div><label>Αγωγή υπερλιπιδαιμίας</label><select id="t_lip">
+        </select>
+      </div>
+      <div>
+        <label>Αγωγή υπερλιπιδαιμίας</label>
+        <div class="button-group">
+          <button type="button" class="button-group-btn selected" onclick="selectMedLip('', this)">
+            <span class="emoji">⭕</span> Καμία
+          </button>
+          <button type="button" class="button-group-btn" onclick="selectMedLip('ΝΑΙ', this)">
+            <span class="emoji">💊</span> ΝΑΙ
+          </button>
+        </div>
+        <select id="t_lip" class="hidden-select">
           <option value="">Καμία</option>
           <option value="ΝΑΙ">ΝΑΙ</option>
-        </select></div>
+        </select>
+      </div>
       <div style="page-break-after:always"></div>
 
     </div><!-- end .grid -->
@@ -1377,6 +1307,61 @@ Single-file architecture for:
     function g(id) { return document.getElementById(id).value }
     function num(id) { let v = g(id); return v !== "" ? Number(v) : null }
 
+    /* ═══════════════════════════════════════════════════════════════════════════
+     * BUTTON GROUP SELECTION HANDLERS
+     * ═══════════════════════════════════════════════════════════════════════════ */
+
+    function selectGender(value, button) {
+      // Update hidden select
+      document.getElementById('s').value = value;
+      // Update button states
+      button.parentElement.querySelectorAll('.button-group-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      button.classList.add('selected');
+    }
+
+    function selectDiabetes(value, button) {
+      document.getElementById('dm').value = value;
+      button.parentElement.querySelectorAll('.button-group-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      button.classList.add('selected');
+      onDMchange(); // Trigger diabetes change handler
+    }
+
+    function selectSmoke(value, button) {
+      document.getElementById('smoke').value = value;
+      button.parentElement.querySelectorAll('.button-group-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      button.classList.add('selected');
+    }
+
+    function selectMedSugar(value, button) {
+      document.getElementById('t_sug').value = value;
+      button.parentElement.querySelectorAll('.button-group-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      button.classList.add('selected');
+    }
+
+    function selectMedHtn(value, button) {
+      document.getElementById('t_htn').value = value;
+      button.parentElement.querySelectorAll('.button-group-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      button.classList.add('selected');
+    }
+
+    function selectMedLip(value, button) {
+      document.getElementById('t_lip').value = value;
+      button.parentElement.querySelectorAll('.button-group-btn').forEach(btn => {
+        btn.classList.remove('selected');
+      });
+      button.classList.add('selected');
+    }
+
     /* BMI */
     function autoBMI() {
       let w = num('w'), h = num('h');
@@ -1463,10 +1448,56 @@ Single-file architecture for:
         }
       });
 
+      // Update button group states
+      updateButtonGroupStates();
+
       // Auto-calculate BMI and kidney values
       autoBMI();
       update_eGFR();
       update_ACR();
+    }
+
+    /* Update all button group visual states based on hidden select values */
+    function updateButtonGroupStates() {
+      // Gender
+      const gender = document.getElementById('s').value;
+      document.querySelectorAll('[onclick^="selectGender"]').forEach(btn => {
+        const value = btn.getAttribute('onclick').includes('male') && !btn.getAttribute('onclick').includes('female') ? 'male' : 'female';
+        btn.classList.toggle('selected', value === gender);
+      });
+
+      // Diabetes
+      const dm = document.getElementById('dm').value;
+      document.querySelectorAll('[onclick^="selectDiabetes"]').forEach(btn => {
+        const value = btn.getAttribute('onclick').includes('ΟΧΙ') ? 'ΟΧΙ' : 'ΝΑΙ';
+        btn.classList.toggle('selected', value === dm);
+      });
+
+      // Smoking
+      const smoke = document.getElementById('smoke').value;
+      document.querySelectorAll('[onclick^="selectSmoke"]').forEach(btn => {
+        const value = btn.getAttribute('onclick').includes('ΟΧΙ') ? 'ΟΧΙ' : 'ΝΑΙ';
+        btn.classList.toggle('selected', value === smoke);
+      });
+
+      // Medications
+      const t_sug = document.getElementById('t_sug').value;
+      document.querySelectorAll('[onclick^="selectMedSugar"]').forEach(btn => {
+        const value = btn.getAttribute('onclick').includes("''") ? '' : 'ΝΑΙ';
+        btn.classList.toggle('selected', value === t_sug);
+      });
+
+      const t_htn = document.getElementById('t_htn').value;
+      document.querySelectorAll('[onclick^="selectMedHtn"]').forEach(btn => {
+        const value = btn.getAttribute('onclick').includes("''") ? '' : 'ΝΑΙ';
+        btn.classList.toggle('selected', value === t_htn);
+      });
+
+      const t_lip = document.getElementById('t_lip').value;
+      document.querySelectorAll('[onclick^="selectMedLip"]').forEach(btn => {
+        const value = btn.getAttribute('onclick').includes("''") ? '' : 'ΝΑΙ';
+        btn.classList.toggle('selected', value === t_lip);
+      });
     }
 
     /* ═══════════════════════════════════════════════════════════════════════════
