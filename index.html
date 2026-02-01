@@ -16,7 +16,7 @@ FILE STRUCTURE (1,300+ lines):
 ═══════════════════════════════════════════════════════════════════════════════
 
 Lines 7-161:      CSS STYLES (~155 lines)
-                  - Risk category colors (ASCVD, SCORE2-DM, BMI, Lp(a), ACR, eGFR)
+                  - Risk category colors (SCORE2-DM, BMI, Lp(a), ACR, eGFR)
                   - KDIGO matrix styling (6×3 grid)
                   - Test button styles
                   - Print optimizations
@@ -43,7 +43,6 @@ JAVASCRIPT SECTIONS:
 2. MEDICAL CONSTANTS (lines 451-540)
    - SCORE2-Diabetes coefficients (moderate-risk Greece)
    - Greek population means (Attica study, Table 1)
-   - ASCVD/PCE coefficients (Pooled Cohort Equations)
 
 3. HELLENIC SCORE II+ (lines 541-620)
    - Greek population calibration
@@ -52,7 +51,6 @@ JAVASCRIPT SECTIONS:
    - Age/sex-specific interpolation
 
 4. CARDIOVASCULAR RISK CALCULATORS (lines 621-690)
-   - ASCVD 10-year risk (ages 40-79)
    - SCORE2-Diabetes linear predictor
    - Risk categorization functions
 
@@ -86,7 +84,6 @@ MEDICAL ALGORITHMS IMPLEMENTED:
 ✓ SCORE2-OP (ESC 2021) - 10-year CV risk, non-diabetics 70-89
 ✓ SCORE2-Diabetes (ESC 2021) - Diabetics with HbA1c & eGFR
 ✓ HellenicSCORE II+ (Panagiotakos 2024) - Greek-calibrated with Lp(a) & DM
-✓ ASCVD/PCE (ACC/AHA) - Pooled Cohort Equations, ages 40-79
 ✓ CKD-EPI 2021 - eGFR without race adjustment
 ✓ KDIGO - CKD risk stratification matrix
 ✓ IDF Metabolic Syndrome - European cutoffs
@@ -309,19 +306,16 @@ Single-file architecture for:
     #printBtn {
       background: linear-gradient(135deg, #667eea 0%, #5a67d8 100%);
       color: white;
-      margin-left: 10px;
     }
 
     #clearBtn {
       background: linear-gradient(135deg, #fc8181 0%, #f56565 100%);
       color: white;
-      margin-left: 10px;
     }
 
     #clearStackBtn {
       background: linear-gradient(135deg, #b794f4 0%, #9f7aea 100%);
       color: white;
-      margin-left: 10px;
     }
 
     /* Output */
@@ -347,7 +341,6 @@ Single-file architecture for:
     }
 
     /* Risk Category Colors - Updated for Light Theme */
-    .ascvd-low,
     .s2d-low,
     .lpa-low,
     .acr-a1,
@@ -357,7 +350,6 @@ Single-file architecture for:
       font-weight: 700;
     }
 
-    .ascvd-border,
     .s2d-mid,
     .lpa-mid,
     .gfr-g2,
@@ -366,7 +358,6 @@ Single-file architecture for:
       font-weight: 700;
     }
 
-    .ascvd-mid,
     .s2d-high,
     .lpa-high,
     .acr-a2,
@@ -375,7 +366,6 @@ Single-file architecture for:
       font-weight: 700;
     }
 
-    .ascvd-high,
     .s2d-vhigh,
     .lpa-very,
     .acr-a3,
@@ -787,7 +777,6 @@ Single-file architecture for:
       border: none;
       font-weight: 600;
       cursor: pointer;
-      margin-left: 8px;
       transition: all 0.2s;
       display: inline-flex;
       align-items: center;
@@ -971,6 +960,255 @@ Single-file architecture for:
     .modal-close:hover {
       color: #ef4444;
     }
+
+    /* ═══════════════════════════════════════════════════════════════════════════
+       MOBILE RESPONSIVE STYLES
+       ═══════════════════════════════════════════════════════════════════════════ */
+
+    /* Tablet breakpoint */
+    @media (max-width: 768px) {
+      body {
+        padding: 12px;
+      }
+
+      .card {
+        padding: 16px;
+        border-radius: 16px;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      h2 {
+        font-size: 0.85rem;
+      }
+
+      #logo {
+        width: 56px;
+        height: 56px;
+        font-size: 1.2rem;
+        border-radius: 14px;
+      }
+
+      /* Form grid - single column on mobile */
+      .grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      /* Field groups */
+      .field-group {
+        padding: 16px;
+      }
+
+      .field-group-title {
+        font-size: 1rem;
+      }
+
+      /* Button group styling for action buttons */
+      #calcBtn,
+      #printBtn,
+      #clearBtn,
+      #clearStackBtn {
+        margin: 4px;
+        padding: 12px 16px;
+        font-size: 0.9rem;
+      }
+
+      /* Export buttons row */
+      .export-btn {
+        margin: 4px;
+        padding: 10px 12px;
+        font-size: 0.85rem;
+      }
+
+      /* Unit dropdowns */
+      #lpa_unit,
+      #ucr_unit {
+        max-width: 80px;
+        font-size: 0.85rem;
+        padding: 10px 8px;
+      }
+
+      /* KDIGO table wrapper for horizontal scroll */
+      .kdigo-wrap {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 16px 12px;
+      }
+
+      .kdigo th,
+      .kdigo td {
+        min-width: 70px;
+        padding: 6px 8px;
+        font-size: 0.8rem;
+        height: 50px;
+      }
+
+      .kd-mark {
+        font-size: 22px;
+      }
+
+      /* Test data buttons - single column on mobile */
+      #testButtons > div[style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+        gap: 16px;
+      }
+
+      .test-btn {
+        padding: 12px 14px;
+        font-size: 0.9rem;
+      }
+
+      /* Report section */
+      #report {
+        padding: 16px;
+        font-size: 0.85rem;
+        line-height: 1.7;
+      }
+
+      /* Modal */
+      .modal-content {
+        width: 95%;
+        padding: 16px;
+        max-height: 85vh;
+      }
+
+      /* Impact section */
+      .impact-section {
+        padding: 16px;
+      }
+
+      .impact-item {
+        padding: 12px;
+        flex-wrap: wrap;
+      }
+
+      .impact-action {
+        font-size: 0.9rem;
+      }
+
+      /* Button group buttons */
+      .button-group-btn {
+        padding: 8px 14px;
+        font-size: 0.85rem;
+      }
+    }
+
+    /* Small phone breakpoint */
+    @media (max-width: 480px) {
+      body {
+        padding: 8px;
+      }
+
+      .card {
+        padding: 12px;
+        border-radius: 12px;
+      }
+
+      h1 {
+        font-size: 1.2rem;
+      }
+
+      h2 {
+        font-size: 0.8rem;
+      }
+
+      #logo {
+        width: 48px;
+        height: 48px;
+        font-size: 1rem;
+        margin-bottom: 12px;
+      }
+
+      /* Inputs */
+      input,
+      select {
+        padding: 10px 12px;
+        font-size: 0.9rem;
+      }
+
+      label {
+        font-size: 0.8rem;
+      }
+
+      .ref {
+        font-size: 0.7rem;
+      }
+
+      /* Buttons - stack on very small screens */
+      button {
+        padding: 12px 14px;
+        font-size: 0.85rem;
+      }
+
+      #calcBtn,
+      #printBtn,
+      #clearBtn,
+      #clearStackBtn {
+        display: block;
+        width: 100%;
+        margin: 6px 0;
+      }
+
+      .export-btn {
+        display: inline-block;
+        margin: 4px 2px;
+        padding: 10px 10px;
+        font-size: 0.8rem;
+      }
+
+      /* KDIGO table - even smaller */
+      .kdigo th,
+      .kdigo td {
+        min-width: 60px;
+        padding: 4px 6px;
+        font-size: 0.75rem;
+        height: 45px;
+      }
+
+      .kd-mark {
+        font-size: 18px;
+      }
+
+      /* Test buttons */
+      .test-btn {
+        padding: 10px 12px;
+        font-size: 0.85rem;
+      }
+
+      /* Report */
+      #report {
+        padding: 12px;
+        font-size: 0.8rem;
+      }
+
+      /* Impact items */
+      .impact-item {
+        padding: 10px;
+      }
+
+      .impact-reduction {
+        padding: 4px 8px;
+        font-size: 0.8rem;
+      }
+
+      /* Button groups */
+      .button-group {
+        gap: 6px;
+      }
+
+      .button-group-btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+      }
+
+      /* Combined total in impact */
+      .combined-total {
+        padding: 12px;
+      }
+    }
   </style>
 </head>
 
@@ -979,7 +1217,7 @@ Single-file architecture for:
 
     <h1>Γενικός Οικογενειακός Ιατρός<br>Dr Γιαλαβούζης Σάββας</h1>
     <div id="logo">MS</div>
-    <h2>Ολιστικός Καρδιο-Νεφρο-Μεταβολικός Κίνδυνος<br>IDF · SCORE2 / ASCVD · CKD-EPI / KDIGO / HellenicSCORE II+</h2>
+    <h2>Ολιστικός Καρδιο-Νεφρο-Μεταβολικός Κίνδυνος<br>IDF · SCORE2 · CKD-EPI / KDIGO · HellenicSCORE II+</h2>
     <div style="height:1px;background:#2a3766;margin:12px auto 18px;max-width:80%"></div>
 
     <!-- Test Data Buttons -->
@@ -1039,7 +1277,7 @@ Single-file architecture for:
         <div class="ref">άνδρες ≥40 — γυναίκες ≥50</div>
       </div>
       <div><label>Συνολική χοληστερόλη TC (mg/dL)</label><input id="tc" type="number">
-        <div class="ref">για ASCVD / SCORE2</div>
+        <div class="ref">για SCORE2</div>
       </div>
 
       <div><label>Γλυκόζη νηστείας (mg/dL)</label><input id="fpg" type="number">
@@ -1237,7 +1475,7 @@ Single-file architecture for:
     </div>
 
     <!-- Buttons -->
-    <div style="text-align:center">
+    <div class="action-buttons" style="text-align:center;display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:24px">
       <button id="calcBtn" onclick="evalMS()">Υπολογισμός</button>
       <button id="printBtn" onclick="window.print()">🖨️ Εκτύπωση</button>
       <button id="clearBtn" onclick="clearAll()">Καθαρισμός</button>
@@ -1245,9 +1483,9 @@ Single-file architecture for:
     </div>
 
     <!-- Second row of buttons: Export & History -->
-    <div style="text-align:center;margin-top:12px">
+    <div class="export-buttons" style="text-align:center;margin-top:12px;display:flex;flex-wrap:wrap;justify-content:center;gap:8px">
       <button id="saveBtn" class="export-btn" onclick="saveAssessment()">💾 Αποθήκευση</button>
-      <button id="compareBtn" class="export-btn" onclick="showCompareModal()">📊 Σύγκριση Προόδου</button>
+      <button id="compareBtn" class="export-btn" onclick="showCompareModal()">📊 Σύγκριση</button>
       <button id="pdfBtn" class="export-btn" onclick="generatePDF()">📄 PDF</button>
       <button id="htmlBtn" class="export-btn" onclick="generateHTML()">🌐 HTML</button>
       <select id="historySelect" onchange="loadHistoryEntry()" style="display:none">
@@ -1503,8 +1741,7 @@ Single-file architecture for:
     /* ═══════════════════════════════════════════════════════════════════════════
      * SECTION 2: MEDICAL CONSTANTS & COEFFICIENTS
      * ═══════════════════════════════════════════════════════════════════════════
-     * Unit conversions, SCORE2-Diabetes coefficients, Greek population data,
-     * ASCVD/PCE coefficients for cardiovascular risk algorithms
+     * Unit conversions, SCORE2-Diabetes coefficients, Greek population data
      * ═════════════════════════════════════════════════════════════════════════ */
 
     /* === Conversions === */
@@ -1747,26 +1984,6 @@ Single-file architecture for:
       return risk * factor;
     }
 
-    /* ASCVD (non-DM) */
-    const PCE_WOMEN = { lnage: -29.799, lnage2: 4.884, lntc: 13.540, lnage_lntc: -3.114, lnhdl: -13.578, lnage_lnhdl: 3.149, lnsbp_treated: 2.019, lnsbp_untreated: 1.957, smoker: 7.574, lnage_smoker: -1.665, mean: -29.18, S0: 0.9665 };
-    const PCE_MEN = { lnage: 12.344, lntc: 11.853, lnage_lntc: -2.664, lnhdl: -7.990, lnage_lnhdl: 1.769, lnsbp_treated: 1.797, lnsbp_untreated: 1.764, smoker: 7.837, lnage_smoker: -1.795, mean: 61.18, S0: 0.9144 };
-
-    function ascvdRisk(age, sex, tc, hdl, sbp, treatedBP, smoker) {
-      if (!(age && tc && hdl && sbp)) return { ok: false, msg: "ελλιπή στοιχεία" };
-      if (age < 40 || age > 79) return { ok: false, msg: "εκτός ορίων ηλικίας (40–79)" };
-      const lnAge = Math.log(age), lnTC = Math.log(tc), lnHDL = Math.log(hdl), lnSBP = Math.log(sbp);
-      if (sex === 'female') {
-        const c = PCE_WOMEN;
-        let sum = c.lnage * lnAge + c.lnage2 * Math.pow(lnAge, 2) + c.lntc * lnTC + c.lnage_lntc * lnAge * lnTC + c.lnhdl * lnHDL + c.lnage_lnhdl * lnAge * lnHDL + (treatedBP ? c.lnsbp_treated : c.lnsbp_untreated) * lnSBP + (smoker ? c.smoker : 0) + (smoker ? c.lnage_smoker * lnAge : 0);
-        const risk = 1 - Math.pow(c.S0, Math.exp(sum - c.mean));
-        return { ok: true, risk: risk };
-      } else {
-        const c = PCE_MEN;
-        let sum = c.lnage * lnAge + c.lntc * lnTC + c.lnage_lntc * lnAge * lnTC + c.lnhdl * lnHDL + c.lnage_lnhdl * lnAge * lnHDL + (treatedBP ? c.lnsbp_treated : c.lnsbp_untreated) * lnSBP + (smoker ? c.smoker : 0) + (smoker ? c.lnage_smoker * lnAge : 0);
-        const risk = 1 - Math.pow(c.S0, Math.exp(sum - c.mean));
-        return { ok: true, risk: risk };
-      }
-    }
 
     /* ═══════════════════════════════════════════════════════════════════════════
      * SECTION 5: KIDNEY FUNCTION MODULE
@@ -1987,7 +2204,6 @@ Single-file architecture for:
      *    - SCORE2 / SCORE2-OP (non-diabetics, ages 40-89)
      *    - SCORE2-Diabetes (diabetics with HbA1c & eGFR)
      *    - HellenicSCORE II+ (Greek-calibrated with Lp(a) & diabetes adjustments)
-     *    - ASCVD (Pooled Cohort Equations, ages 40-79)
      * 4. Kidney Function (eGFR, ACR, KDIGO matrix)
      * 5. Lipoprotein(a) risk assessment
      * 6. ESC 2023 LDL-C therapeutic targets
@@ -2203,19 +2419,6 @@ Single-file architecture for:
           }
         }
 
-        let smoker = (g('smoke') === 'ΝΑΙ');
-        let treatedBP = (g('t_htn') === 'ΝΑΙ');
-        let ascvd = ascvdRisk(age, (sex === 'female' ? 'female' : 'male'), tcVal, hdl, sbp, treatedBP, smoker);
-        if (ascvd.ok) {
-          let pctA = ascvd.risk * 100;
-          const tag = (pctA < 5) ? "<span class='ascvd-low'>Χαμηλού κινδύνου</span>" :
-            (pctA < 7.5) ? "<span class='ascvd-border'>Οριακού κινδύνου</span>" :
-              (pctA < 20) ? "<span class='ascvd-mid'>Μετρίου κινδύνου</span>" :
-                "<span class='ascvd-high'>Υψηλού κινδύνου</span>";
-          rep += "\nASCVD 10-ετίας: " + pctA.toFixed(1) + "% (" + tag + ")";
-        } else {
-          rep += "\nASCVD 10-ετίας: N/A (" + ascvd.msg + ")";
-        }
       }
 
       // Lp(a)
@@ -2519,8 +2722,6 @@ Single-file architecture for:
         const score2Match = reportEl.innerHTML.match(/SCORE2[^:]*:\s*([\d.]+)%/);
         if (score2Match) data.scores.score2 = parseFloat(score2Match[1]);
 
-        const ascvdMatch = reportEl.innerHTML.match(/ASCVD[^:]*:\s*([\d.]+)%/);
-        if (ascvdMatch) data.scores.ascvd = parseFloat(ascvdMatch[1]);
       }
 
       return data;
@@ -2908,7 +3109,7 @@ Single-file architecture for:
       section.style.display = 'block';
     }
 
-    // Get current SCORE2 or ASCVD risk from report
+    // Get current SCORE2 risk from report
     function getCurrentRiskScore() {
       const reportEl = document.getElementById('report');
       if (!reportEl) return null;
@@ -2917,10 +3118,6 @@ Single-file architecture for:
       // Try to find SCORE2 percentage
       const score2Match = text.match(/SCORE2[^:]*:\s*([\d.]+)%/);
       if (score2Match) return parseFloat(score2Match[1]);
-
-      // Fallback to ASCVD
-      const ascvdMatch = text.match(/ASCVD[^:]*:\s*([\d.]+)%/);
-      if (ascvdMatch) return parseFloat(ascvdMatch[1]);
 
       return null;
     }
@@ -3195,10 +3392,9 @@ Single-file architecture for:
 
         lines.forEach(line => {
           if (line.includes('SCORE2') || line.includes('HellenicSCORE') ||
-            line.includes('ASCVD') || line.includes('Lp(a)') ||
-            line.includes('eGFR') || line.includes('ACR') ||
-            line.includes('LDL-C') || line.includes('KDIGO') ||
-            line.includes('Μεταβολικό σύνδρομο')) {
+            line.includes('Lp(a)') || line.includes('eGFR') ||
+            line.includes('ACR') || line.includes('LDL-C') ||
+            line.includes('KDIGO') || line.includes('Μεταβολικό σύνδρομο')) {
             riskLines.push(line.trim());
           }
         });
