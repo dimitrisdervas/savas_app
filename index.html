@@ -1637,6 +1637,7 @@ Single-file architecture for:
     // HellenicSCORE II+ base calculation using D'Agostino recalibration formula
     // Reference: Panagiotakos et al., Hellenic J Cardiology 2024;79:3-14
     // Formula: Risk = 1 - S_age,sex × exp{Σ βᵢ × (Xᵢ - X̄ᵢ)}
+    // Uses age- and sex-specific S₀ values derived from Greek (Attica) CVD rates (Table 2)
     function hellenicSCORE2plus_base(age, sex, sbp, tc_mgdl, hdl_mgdl, smokerYN) {
       if (!age || !sbp || !tc_mgdl || !hdl_mgdl) return null;
       if (age < 40 || age > 69) return null;
@@ -1661,15 +1662,58 @@ Single-file architecture for:
         hdl: -0.5396,     // per 1 mmol/L (centered at 1.3, scaled by 0.5)
         smoking: 0.6012   // binary (0/1)
       } : {
-        sbp: 0.0157,      // per 1 mmHg  
+        sbp: 0.0157,      // per 1 mmHg
         tc: 0.1002,       // per 1 mmol/L (centered at 6)
         hdl: -0.5212,     // per 1 mmol/L (centered at 1.3, scaled by 0.5)
         smoking: 0.7744   // binary (0/1)
       };
 
-      // Age-specific baseline survival from SCORE2 (moderate-risk region)
-      // Interpolated for Greek population based on 10-year CVD rates from Attica study
-      const S0 = sexKey === 'male' ? 0.9605 : 0.9776;
+      // Age-specific baseline survival S₀ derived from Greek population (Attica study)
+      // These values are derived from Table 2 average Greek population risks:
+      // S₀ = 1 - Risk (for average population where LP_adjusted ≈ 0)
+      const greekS0Table = {
+        male: {
+          40: 0.977,
+          45: 0.950,
+          50: 0.930,
+          55: 0.905,
+          60: 0.870,
+          65: 0.824
+        },
+        female: {
+          40: 0.990,
+          45: 0.978,
+          50: 0.956,
+          55: 0.930,
+          60: 0.907,
+          65: 0.873
+        }
+      };
+
+      // Interpolate S₀ for the exact age
+      function getGreekS0(age, sexKey) {
+        const table = greekS0Table[sexKey];
+        const ages = [40, 45, 50, 55, 60, 65];
+
+        // Clamp age to valid range
+        const clampedAge = Math.max(40, Math.min(65, age));
+
+        // Find surrounding ages for interpolation
+        let lowerAge = 40, upperAge = 45;
+        for (let i = 0; i < ages.length - 1; i++) {
+          if (clampedAge >= ages[i] && clampedAge <= ages[i + 1]) {
+            lowerAge = ages[i];
+            upperAge = ages[i + 1];
+            break;
+          }
+        }
+
+        // Linear interpolation
+        const t = (clampedAge - lowerAge) / (upperAge - lowerAge);
+        return table[lowerAge] + t * (table[upperAge] - table[lowerAge]);
+      }
+
+      const S0 = getGreekS0(age, sexKey);
 
       // D'Agostino recalibration: adjust linear predictor by difference from Greek means
       // LP_adjusted = Σ βᵢ × (Xᵢ - X̄ᵢ)
@@ -1682,15 +1726,11 @@ Single-file architecture for:
         beta.smoking * (smoker - smokingPrevalence);
 
       // Apply recalibration formula: Risk = 1 - S0^exp(LP_adjusted)
-      const baseRisk = 1 - Math.pow(S0, Math.exp(lp_adjusted));
+      // This directly produces the HellenicSCORE II+ risk using Greek S₀
+      // No additional SCORE2 scaling is needed - the Greek S₀ already encodes the calibration
+      const risk = 1 - Math.pow(S0, Math.exp(lp_adjusted));
 
-      // Apply moderate-risk region scaling (same as SCORE2)
-      const scale1 = sexKey === 'male' ? -0.1565 : -0.3143;
-      const scale2 = sexKey === 'male' ? 0.8009 : 0.7701;
-
-      const calibratedRisk = 1 - Math.exp(-Math.exp(scale1 + scale2 * Math.log(-Math.log(1 - baseRisk))));
-
-      return Math.max(0, Math.min(0.95, calibratedRisk));
+      return Math.max(0, Math.min(0.95, risk));
     }
 
     // Apply diabetes adjustment (from PDF page 9)
@@ -2753,7 +2793,7 @@ Single-file architecture for:
       // 5. Lipid management
       if (tc && tc >= 200) {
         impacts.push({
-          action: '💊 Μείωση LDL-C κατά 1 mmol/L',
+          action: '💊 Μείωση LDL-C κατά ~39 mg/dL',
           reduction: '~22%',
           priority: 3,
           stars: tc >= 240 ? 2 : 1,
